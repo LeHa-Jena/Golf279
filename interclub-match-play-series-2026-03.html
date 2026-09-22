@@ -1,0 +1,1579 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071b18">
+<title>Interclub Match Play Series 2026</title>
+
+<style>
+:root{
+  --ink:#102522;
+  --deep:#071b18;
+  --green:#0f3b31;
+  --green2:#1d604d;
+  --mint:#e8f1e8;
+  --gold:#c69a4b;
+  --gold2:#e5bd70;
+  --cream:#f4f1e9;
+  --paper:#f7f8f4;
+  --white:#fff;
+  --muted:#6c7b75;
+  --line:#dce4dd;
+  --red:#a74338;
+  --shadow:0 18px 50px rgba(8,31,25,.12);
+}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 5% 10%,#e4eee5 0,transparent 25%),
+    var(--paper);
+  font-family:Inter,Arial,"Helvetica Neue",sans-serif;
+  line-height:1.5;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.18;
+  background-image:
+    linear-gradient(90deg,rgba(15,59,49,.035) 1px,transparent 1px),
+    linear-gradient(rgba(15,59,49,.035) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+
+a{text-decoration:none;color:inherit}
+
+.shell{
+  width:min(1180px,calc(100% - 44px));
+  margin:auto;
+}
+
+.topbar{
+  background:var(--deep);
+  color:#e8f0e8;
+  padding:14px 0;
+  border-bottom:1px solid #ffffff1c;
+  position:relative;
+  z-index:2;
+}
+
+.topbar-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.brand{
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.15em;
+}
+
+.topbar-right{
+  color:#b7cbc0;
+  font-size:12px;
+  letter-spacing:.06em;
+}
+
+.hero{
+  min-height:650px;
+  color:white;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(110deg,rgba(4,22,18,.98),rgba(10,55,42,.87)),
+    radial-gradient(circle at 80% 15%,#c69a4b80,transparent 27%);
+}
+
+.hero:after{
+  content:"01";
+  position:absolute;
+  right:4%;
+  bottom:-70px;
+  font-size:330px;
+  line-height:1;
+  font-weight:900;
+  color:#ffffff09;
+  letter-spacing:-.12em;
+}
+
+.hero-inner{
+  min-height:650px;
+  display:grid;
+  grid-template-columns:1.18fr .82fr;
+  gap:45px;
+  align-items:center;
+  position:relative;
+  z-index:1;
+}
+
+.eyebrow{
+  color:var(--gold2);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+
+h1{
+  margin:17px 0 25px;
+  font-size:clamp(45px,7vw,88px);
+  line-height:.94;
+  letter-spacing:-.07em;
+  max-width:850px;
+}
+
+.hero-copy{
+  color:#cedcd3;
+  max-width:640px;
+  font-size:18px;
+}
+
+.hero-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:30px;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:13px 18px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  border:1px solid transparent;
+  cursor:pointer;
+}
+
+.btn-gold{
+  color:#1c2d23;
+  background:var(--gold2);
+}
+
+.btn-outline{
+  color:#fff;
+  border-color:#ffffff4d;
+  background:#ffffff0b;
+}
+
+.hero-board{
+  border:1px solid #ffffff2d;
+  border-radius:26px;
+  padding:27px;
+  background:
+    linear-gradient(145deg,#ffffff16,#ffffff06);
+  box-shadow:0 20px 60px #00000022;
+  backdrop-filter:blur(8px);
+}
+
+.hero-board-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:24px;
+}
+
+.live-dot{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#c9ddd0;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.live-dot:before{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#65d28b;
+  box-shadow:0 0 0 5px #65d28b22;
+}
+
+.hero-board h3{
+  font-size:27px;
+  line-height:1.1;
+  margin:0 0 19px;
+}
+
+.hero-mini-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.hero-mini{
+  padding:16px;
+  border:1px solid #ffffff1e;
+  border-radius:14px;
+  background:#ffffff08;
+}
+
+.hero-mini strong{
+  display:block;
+  font-size:26px;
+  color:#fff;
+}
+
+.hero-mini span{
+  color:#bcd0c5;
+  font-size:12px;
+}
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  position:relative;
+  z-index:3;
+  margin-top:-42px;
+  background:#fff;
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+  overflow:hidden;
+}
+
+.kpi{
+  padding:25px 28px;
+  border-right:1px solid var(--line);
+}
+
+.kpi:last-child{border-right:0}
+
+.kpi strong{
+  display:block;
+  font-size:38px;
+  line-height:1;
+  color:var(--green);
+  letter-spacing:-.06em;
+}
+
+.kpi span{
+  display:block;
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+main{
+  padding:75px 0 100px;
+  position:relative;
+  z-index:1;
+}
+
+section{
+  padding:45px 0;
+  border-bottom:1px solid var(--line);
+}
+
+section:last-child{border-bottom:0}
+
+.section-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:25px;
+  margin-bottom:28px;
+}
+
+.section-heading h2{
+  margin:8px 0 0;
+  font-size:clamp(29px,4vw,47px);
+  line-height:1.03;
+  letter-spacing:-.06em;
+}
+
+.section-heading p{
+  max-width:410px;
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.grid-3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:17px;
+}
+
+.grid-2{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:25px;
+  box-shadow:0 8px 28px rgba(11,42,31,.04);
+}
+
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+  transition:.25s ease;
+}
+
+.card-gold{
+  border-top:4px solid var(--gold);
+}
+
+.card-dark{
+  color:#fff;
+  background:linear-gradient(145deg,var(--green),#0b2d26);
+  border:0;
+}
+
+.card-dark .muted,
+.card-dark p{color:#c3d6ca}
+
+.card-label{
+  color:var(--gold);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.card h3{
+  margin:12px 0 8px;
+  font-size:21px;
+  line-height:1.1;
+}
+
+.muted{color:var(--muted)}
+
+.small{
+  font-size:13px;
+}
+
+ul{
+  margin:12px 0 0;
+  padding-left:18px;
+}
+
+li{margin:7px 0}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 11px;
+  border-radius:999px;
+  background:var(--mint);
+  color:var(--green);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.badge-gold{
+  background:#f6ead3;
+  color:#805b1f;
+}
+
+.leg-list{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.leg-card{
+  position:relative;
+  min-height:210px;
+  padding:23px;
+  border-radius:18px;
+  color:#fff;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg,#0c3027,#1a604b);
+}
+
+.leg-card:after{
+  content:"LEG";
+  position:absolute;
+  right:-9px;
+  bottom:-35px;
+  font-size:100px;
+  font-weight:900;
+  color:#ffffff0a;
+}
+
+.leg-number{
+  color:var(--gold2);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.15em;
+}
+
+.leg-card h3{
+  font-size:27px;
+  margin:17px 0 25px;
+}
+
+.fixture{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-top:1px solid #ffffff2c;
+  padding-top:14px;
+  font-size:14px;
+  font-weight:800;
+}
+
+.fixture span{
+  color:var(--gold2);
+  font-size:11px;
+}
+
+.venue-box{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:15px;
+}
+
+.venue-main{
+  min-height:190px;
+  padding:27px;
+  color:#fff;
+  border-radius:20px;
+  background:
+    linear-gradient(120deg,#09251fdd,#14583fdd),
+    radial-gradient(circle at 80% 20%,#c69a4b99,transparent 28%);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.venue-main h3{
+  margin:10px 0 0;
+  font-size:30px;
+  line-height:1.05;
+}
+
+.venue-meta{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.venue-item{
+  padding:18px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:15px;
+}
+
+.venue-item strong{
+  display:block;
+  color:var(--green);
+  font-size:16px;
+}
+
+.venue-item span{
+  color:var(--muted);
+  display:block;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.headline-stat{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:17px 0;
+  border-top:1px solid var(--line);
+}
+
+.headline-stat:first-child{border-top:0}
+
+.headline-stat b{
+  color:var(--gold);
+  font-size:30px;
+  line-height:1;
+  min-width:54px;
+}
+
+.headline-stat span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.match-section{
+  position:relative;
+  margin-top:18px;
+  padding:30px;
+  border-radius:25px;
+  background:
+    linear-gradient(135deg,#071b18,#123f32);
+  color:#fff;
+  overflow:hidden;
+}
+
+.match-section:before{
+  content:"MATCH PLAY";
+  position:absolute;
+  right:-30px;
+  top:20px;
+  color:#ffffff09;
+  font-size:68px;
+  font-weight:900;
+  letter-spacing:-.08em;
+}
+
+.match-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:start;
+  gap:20px;
+  position:relative;
+  z-index:1;
+}
+
+.match-top h3{
+  margin:6px 0 0;
+  font-size:31px;
+  line-height:1.05;
+}
+
+.match-top p{
+  color:#bdd0c6;
+  font-size:13px;
+  margin:8px 0 0;
+}
+
+.leg-tabs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:25px 0 17px;
+  position:relative;
+  z-index:1;
+}
+
+.leg-tab{
+  padding:10px 15px;
+  border:1px solid #ffffff35;
+  border-radius:999px;
+  color:#c8d9d0;
+  background:#ffffff0a;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.leg-tab.active{
+  color:#1b2e25;
+  background:var(--gold2);
+  border-color:var(--gold2);
+}
+
+.leg-panel{display:none;position:relative;z-index:1}
+.leg-panel.active{display:block}
+
+.venue-ribbon{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:16px 19px;
+  margin-bottom:18px;
+  border:1px solid #ffffff23;
+  border-radius:15px;
+  background:#ffffff0b;
+}
+
+.venue-ribbon .venue-name{
+  font-size:16px;
+  font-weight:900;
+}
+
+.venue-ribbon .venue-info{
+  color:#bed3c8;
+  font-size:12px;
+  text-align:right;
+}
+
+.duel-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+.duel{
+  background:#fff;
+  color:var(--ink);
+  border-radius:18px;
+  padding:20px;
+  border:1px solid #ffffff15;
+  box-shadow:0 8px 25px #00000014;
+}
+
+.duel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.duel-title{
+  color:var(--green);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.duel-no{
+  color:var(--gold);
+  font-size:22px;
+  font-weight:900;
+}
+
+.match-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.match-row{
+  display:grid;
+  grid-template-columns:105px 1fr;
+  gap:12px;
+  align-items:center;
+  padding:13px 12px;
+  border-radius:11px;
+  background:#f3f6f1;
+}
+
+.match-row.fourball{border-left:4px solid var(--green2)}
+.match-row.singles{border-left:4px solid var(--gold)}
+
+.match-type{
+  font-size:10px;
+  font-weight:900;
+  color:var(--muted);
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.match-pair{
+  color:var(--ink);
+  font-size:13px;
+  font-weight:900;
+}
+
+.match-pair small{
+  display:block;
+  color:var(--muted);
+  font-weight:500;
+  margin-top:2px;
+}
+
+.match-summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:18px;
+}
+
+.summary-box{
+  text-align:center;
+  padding:18px 10px;
+  border-radius:14px;
+  background:#ffffff0b;
+  border:1px solid #ffffff1f;
+}
+
+.summary-box strong{
+  display:block;
+  font-size:24px;
+  color:var(--gold2);
+}
+
+.summary-box span{
+  color:#b9cec3;
+  font-size:11px;
+}
+
+.score-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:17px;
+}
+
+.score-card{
+  padding:28px;
+  border-radius:19px;
+  background:#fff;
+  border:1px solid var(--line);
+}
+
+.score-card .score{
+  margin:16px 0 9px;
+  color:var(--green);
+  font-size:33px;
+  font-weight:900;
+  letter-spacing:-.06em;
+}
+
+.rank-list{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:12px 24px;
+}
+
+.rank-row{
+  display:grid;
+  grid-template-columns:42px 1fr;
+  gap:10px;
+  align-items:center;
+  padding:16px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.rank-row:last-child{border-bottom:0}
+
+.rank-row b{
+  color:var(--gold);
+  font-size:21px;
+}
+
+.rank-row strong{display:block}
+.rank-row span{display:block;color:var(--muted);font-size:12px}
+
+.awards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+
+.award{
+  min-height:215px;
+  padding:23px;
+  border-radius:18px;
+  background:#fff;
+  border:1px solid var(--line);
+}
+
+.award.primary{
+  background:linear-gradient(145deg,#0c3027,#1d604d);
+  color:#fff;
+}
+
+.award.primary p{color:#cadbd1}
+
+.award h3{
+  margin-top:24px;
+  font-size:22px;
+}
+
+.callout{
+  padding:20px 23px;
+  border-radius:16px;
+  background:#fff7e7;
+  border:1px solid #ecd6a7;
+  color:#684d20;
+}
+
+.checks{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.check{
+  padding:14px 16px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  font-size:13px;
+}
+
+footer{
+  color:#fff;
+  background:var(--deep);
+  padding:40px 0;
+}
+
+.footer-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.footer-title{
+  font-weight:900;
+  letter-spacing:.1em;
+  font-size:13px;
+}
+
+.footer-sub{
+  color:#abc1b5;
+  font-size:12px;
+  margin-top:6px;
+}
+
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero{min-height:auto}
+  .hero-inner{padding:80px 0 130px}
+  .hero-board{max-width:620px}
+  .awards{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:700px){
+  .shell{width:min(100% - 28px,1180px)}
+  .topbar-right{display:none}
+  .topbar-inner{justify-content:center}
+  .hero-inner{padding:62px 0 110px}
+  h1{font-size:48px}
+  .hero-copy{font-size:16px}
+  .kpis{
+    grid-template-columns:repeat(2,1fr);
+    margin-top:-30px;
+  }
+  .kpi{
+    padding:19px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  .kpi:nth-child(2){border-right:0}
+  .kpi strong{font-size:29px}
+  main{padding-top:43px}
+  section{padding:31px 0}
+  .section-heading{display:block}
+  .section-heading p{margin-top:13px}
+  .grid-2,.grid-3,.leg-list,.venue-box,.score-grid,.duel-grid,.awards,.checks{
+    grid-template-columns:1fr
+  }
+  .match-section{padding:20px 13px}
+  .match-top{display:block}
+  .match-top h3{font-size:25px}
+  .venue-ribbon{display:block}
+  .venue-ribbon .venue-info{
+    text-align:left;
+    margin-top:6px;
+  }
+  .match-row{
+    grid-template-columns:1fr;
+    gap:4px;
+  }
+  .match-summary{grid-template-columns:1fr}
+  .footer-inner{display:block}
+  .footer-sub{margin-bottom:15px}
+}
+
+@media print{
+  body:before{display:none}
+  body{background:#fff}
+  .hero{min-height:auto}
+  .hero-inner{min-height:auto;padding:40px 0}
+  .hero-actions,.leg-tabs{display:none}
+  .kpis{margin-top:20px;box-shadow:none}
+  main{padding:20px 0}
+  section{break-inside:avoid}
+  .match-section{break-inside:avoid}
+  @page{size:A4;margin:12mm}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="shell topbar-inner">
+    <div class="brand">INTERCLUB MATCH PLAY SERIES</div>
+    <div class="topbar-right">OFFICIAL SEASON PROPOSAL · 2026</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="shell hero-inner">
+    <div>
+      <div class="eyebrow">A season-long club competition</div>
+      <h1>INTERCLUB<br>MATCH PLAY<br>SERIES 2026</h1>
+      <p class="hero-copy">
+        Một mùa giải đối đầu trực tiếp giữa 4 CLB — nơi chiến thuật,
+        bản lĩnh và chiều sâu đội hình quyết định nhà vô địch.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-gold" href="#match-format">Xem chi tiết thi đấu</a>
+        <button class="btn btn-outline" onclick="window.print()">Print / Save PDF</button>
+      </div>
+    </div>
+
+    <div class="hero-board">
+      <div class="hero-board-top">
+        <div class="eyebrow">Season overview</div>
+        <div class="live-dot">Official format</div>
+      </div>
+
+      <h3>Every match matters.<br>Every club has a chance.</h3>
+
+      <div class="hero-mini-grid">
+        <div class="hero-mini">
+          <strong>04</strong>
+          <span>Clubs</span>
+        </div>
+        <div class="hero-mini">
+          <strong>48</strong>
+          <span>Players</span>
+        </div>
+        <div class="hero-mini">
+          <strong>03</strong>
+          <span>Legs</span>
+        </div>
+        <div class="hero-mini">
+          <strong>01</strong>
+          <span>Champion</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="shell">
+  <div class="kpis">
+    <div class="kpi">
+      <strong>04</strong>
+      <span>CLB tham dự</span>
+    </div>
+    <div class="kpi">
+      <strong>48</strong>
+      <span>Golfer chính thức</span>
+    </div>
+    <div class="kpi">
+      <strong>06</strong>
+      <span>Cuộc đối đầu</span>
+    </div>
+    <div class="kpi">
+      <strong>48</strong>
+      <span>Match toàn mùa</span>
+    </div>
+  </div>
+</div>
+
+<main class="shell">
+
+  <section id="overview">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">01 / Competition concept</div>
+        <h2>Một mùa giải.<br>Một nhà vô địch.</h2>
+      </div>
+      <p>
+        Mô hình vòng tròn một lượt giúp mỗi CLB lần lượt đối đầu với tất cả đối thủ,
+        tạo ra một mùa giải công bằng, cạnh tranh và dễ theo dõi.
+      </p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card card-gold">
+        <div class="card-label">Team structure</div>
+        <h3>12 + 2 golfer / CLB</h3>
+        <p class="muted">12 golfer chính thức và tối đa 2 golfer dự bị đăng ký trước mùa giải.</p>
+      </div>
+
+      <div class="card card-gold">
+        <div class="card-label">Competition format</div>
+        <h3>3 Legs · 6 cuộc đối đầu</h3>
+        <p class="muted">Mỗi CLB gặp đủ 3 CLB còn lại, một lần trong mùa giải.</p>
+      </div>
+
+      <div class="card card-dark">
+        <div class="card-label">The objective</div>
+        <h3>Fight for the title</h3>
+        <p>CLB có tổng League Points cao nhất sau 3 Legs trở thành Champion.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">02 / Season schedule</div>
+        <h2>Ba chặng đấu.<br>Không ai bị bỏ lại.</h2>
+      </div>
+      <span class="badge badge-gold">Round-robin format</span>
+    </div>
+
+    <div class="leg-list">
+      <div class="leg-card">
+        <div class="leg-number">LEG 01</div>
+        <h3>Opening Battle</h3>
+        <div class="fixture"><b>A vs B</b><span>16 MATCH</span></div>
+        <div class="fixture"><b>C vs D</b><span>32 GOLFER</span></div>
+      </div>
+
+      <div class="leg-card">
+        <div class="leg-number">LEG 02</div>
+        <h3>Mid-season Clash</h3>
+        <div class="fixture"><b>A vs C</b><span>16 MATCH</span></div>
+        <div class="fixture"><b>B vs D</b><span>32 GOLFER</span></div>
+      </div>
+
+      <div class="leg-card">
+        <div class="leg-number">LEG 03</div>
+        <h3>Final Showdown</h3>
+        <div class="fixture"><b>A vs D</b><span>16 MATCH</span></div>
+        <div class="fixture"><b>B vs C</b><span>32 GOLFER</span></div>
+      </div>
+    </div>
+
+    <div class="venue-box">
+      <div class="venue-main">
+        <div>
+          <div class="eyebrow">Official competition venue</div>
+          <h3>[TÊN SÂN GOLF]<br>[ĐỊA ĐIỂM]</h3>
+        </div>
+        <div class="small">Địa điểm thi đấu chính thức của Leg sẽ được BTC công bố trước mỗi chặng.</div>
+      </div>
+
+      <div class="venue-meta">
+        <div class="venue-item">
+          <strong>[NGÀY]</strong>
+          <span>Ngày thi đấu</span>
+        </div>
+        <div class="venue-item">
+          <strong>[TEE TIME]</strong>
+          <span>Khung giờ xuất phát</span>
+        </div>
+        <div class="venue-item">
+          <strong>18 HỐ</strong>
+          <span>Match Play format</span>
+        </div>
+        <div class="venue-item">
+          <strong>NET</strong>
+          <span>Handicap-based competition</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="match-format">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">03 / Match format</div>
+        <h2>Chi tiết thi đấu</h2>
+      </div>
+      <p>
+        Mỗi cuộc đối đầu là một battle card gồm 8 Match Play:
+        4 Fourball và 4 Singles.
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card-gold">
+        <div class="card-label">Fourball</div>
+        <h3>04 cặp đấu · 08 golfer</h3>
+        <p class="muted">
+          Hai golfer thi đấu cùng một side. Mỗi golfer đánh bóng riêng;
+          điểm tốt hơn của side tại mỗi hố được sử dụng để phân định match.
+        </p>
+        <span class="badge">A1 + A2 vs B1 + B2</span>
+      </div>
+
+      <div class="card card-gold">
+        <div class="card-label">Singles</div>
+        <h3>04 trận đơn · 04 golfer</h3>
+        <p class="muted">
+          Đối kháng trực tiếp 1 vs 1. Mỗi trận là một Match Play độc lập.
+        </p>
+        <span class="badge badge-gold">A9 vs B9</span>
+      </div>
+    </div>
+
+    <div class="match-section">
+      <div class="match-top">
+        <div>
+          <div class="eyebrow">Official match card</div>
+          <h3>12 vs 12 · 8 Match Play</h3>
+          <p>Chọn từng Leg để xem pairing và địa điểm thi đấu.</p>
+        </div>
+        <span class="badge badge-gold">NET MATCH PLAY</span>
+      </div>
+
+      <div class="leg-tabs">
+        <button class="leg-tab active" data-leg="leg1">LEG 01</button>
+        <button class="leg-tab" data-leg="leg2">LEG 02</button>
+        <button class="leg-tab" data-leg="leg3">LEG 03</button>
+      </div>
+
+      <!-- LEG 01 -->
+      <div class="leg-panel active" id="leg1">
+        <div class="venue-ribbon">
+          <div>
+            <div class="eyebrow">Leg 01 venue</div>
+            <div class="venue-name">[TÊN SÂN GOLF] · [THÀNH PHỐ]</div>
+          </div>
+          <div class="venue-info">[NGÀY THI ĐẤU]<br>[TEE TIME]</div>
+        </div>
+
+        <div class="duel-grid">
+          <div class="duel">
+            <div class="duel-head">
+              <div class="duel-title">Duel 01 · A vs B</div>
+              <div class="duel-no">01</div>
+            </div>
+
+            <div class="match-list">
+              <div class="match-row fourball">
+                <div class="match-type">Fourball 01</div>
+                <div class="match-pair">A1 + A2 <small>vs B1 + B2</small></div>
+              </div>
+              <div class="match-row fourball">
+                <div class="match-type">Fourball 02</div>
+                <div class="match-pair">A3 + A4 <small>vs B3 + B4</small></div>
+              </div>
+              <div class="match-row fourball">
+                <div class="match-type">Fourball 03</div>
+                <div class="match-pair">A5 + A6 <small>vs B5 + B6</small></div>
+              </div>
+              <div class="match-row fourball">
+                <div class="match-type">Fourball 04</div>
+                <div class="match-pair">A7 + A8 <small>vs B7 + B8</small></div>
+              </div>
+              <div class="match-row singles">
+                <div class="match-type">Singles 01</div>
+                <div class="match-pair">A9 <small>vs B9</small></div>
+              </div>
+              <div class="match-row singles">
+                <div class="match-type">Singles 02</div>
+                <div class="match-pair">A10 <small>vs B10</small></div>
+              </div>
+              <div class="match-row singles">
+                <div class="match-type">Singles 03</div>
+                <div class="match-pair">A11 <small>vs B11</small></div>
+              </div>
+              <div class="match-row singles">
+                <div class="match-type">Singles 04</div>
+                <div class="match-pair">A12 <small>vs B12</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="duel">
+            <div class="duel-head">
+              <div class="duel-title">Duel 02 · C vs D</div>
+              <div class="duel-no">02</div>
+            </div>
+
+            <div class="match-list">
+              <div class="match-row fourball">
+                <div class="match-type">Fourball 01</div>
+                <div class="match-pair">C1 + C2 <small>vs D1 + D2</small></div>
+              </div>
+              <div class="match-row fourball">
+                <div class="match-type">Fourball 02</div>
+                <div class="match-pair">C3 + C4 <small>vs D3 + D4</small></div>
+              </div>
+              <div class="match-row fourball">
+                <div class="match-type">Fourball 03</div>
+                <div class="match-pair">C5 + C6 <small>vs D5 + D6</small></div>
+              </div>
+              <div class="match-row fourball">
+                <div class="match-type">Fourball 04</div>
+                <div class="match-pair">C7 + C8 <small>vs D7 + D8</small></div>
+              </div>
+              <div class="match-row singles">
+                <div class="match-type">Singles 01</div>
+                <div class="match-pair">C9 <small>vs D9</small></div>
+              </div>
+              <div class="match-row singles">
+                <div class="match-type">Singles 02</div>
+                <div class="match-pair">C10 <small>vs D10</small></div>
+              </div>
+              <div class="match-row singles">
+                <div class="match-type">Singles 03</div>
+                <div class="match-pair">C11 <small>vs D11</small></div>
+              </div>
+              <div class="match-row singles">
+                <div class="match-type">Singles 04</div>
+                <div class="match-pair">C12 <small>vs D12</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="match-summary">
+          <div class="summary-box"><strong>08</strong><span>Match / Duel</span></div>
+          <div class="summary-box"><strong>16</strong><span>Match / Leg</span></div>
+          <div class="summary-box"><strong>32</strong><span>Golfer thi đấu</span></div>
+        </div>
+      </div>
+
+      <!-- LEG 02 -->
+      <div class="leg-panel" id="leg2">
+        <div class="venue-ribbon">
+          <div>
+            <div class="eyebrow">Leg 02 venue</div>
+            <div class="venue-name">[TÊN SÂN GOLF] · [THÀNH PHỐ]</div>
+          </div>
+          <div class="venue-info">[NGÀY THI ĐẤU]<br>[TEE TIME]</div>
+        </div>
+
+        <div class="duel-grid">
+          <div class="duel">
+            <div class="duel-head">
+              <div class="duel-title">Duel 01 · A vs C</div>
+              <div class="duel-no">01</div>
+            </div>
+
+            <div class="match-list">
+              <div class="match-row fourball"><div class="match-type">Fourball 01</div><div class="match-pair">A1 + A2 <small>vs C1 + C2</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 02</div><div class="match-pair">A3 + A4 <small>vs C3 + C4</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 03</div><div class="match-pair">A5 + A6 <small>vs C5 + C6</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 04</div><div class="match-pair">A7 + A8 <small>vs C7 + C8</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 01</div><div class="match-pair">A9 <small>vs C9</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 02</div><div class="match-pair">A10 <small>vs C10</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 03</div><div class="match-pair">A11 <small>vs C11</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 04</div><div class="match-pair">A12 <small>vs C12</small></div></div>
+            </div>
+          </div>
+
+          <div class="duel">
+            <div class="duel-head">
+              <div class="duel-title">Duel 02 · B vs D</div>
+              <div class="duel-no">02</div>
+            </div>
+
+            <div class="match-list">
+              <div class="match-row fourball"><div class="match-type">Fourball 01</div><div class="match-pair">B1 + B2 <small>vs D1 + D2</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 02</div><div class="match-pair">B3 + B4 <small>vs D3 + D4</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 03</div><div class="match-pair">B5 + B6 <small>vs D5 + D6</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 04</div><div class="match-pair">B7 + B8 <small>vs D7 + D8</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 01</div><div class="match-pair">B9 <small>vs D9</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 02</div><div class="match-pair">B10 <small>vs D10</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 03</div><div class="match-pair">B11 <small>vs D11</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 04</div><div class="match-pair">B12 <small>vs D12</small></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="match-summary">
+          <div class="summary-box"><strong>08</strong><span>Match / Duel</span></div>
+          <div class="summary-box"><strong>16</strong><span>Match / Leg</span></div>
+          <div class="summary-box"><strong>32</strong><span>Golfer thi đấu</span></div>
+        </div>
+      </div>
+
+      <!-- LEG 03 -->
+      <div class="leg-panel" id="leg3">
+        <div class="venue-ribbon">
+          <div>
+            <div class="eyebrow">Leg 03 venue · Final showdown</div>
+            <div class="venue-name">[TÊN SÂN GOLF] · [THÀNH PHỐ]</div>
+          </div>
+          <div class="venue-info">[NGÀY THI ĐẤU]<br>[TEE TIME]</div>
+        </div>
+
+        <div class="duel-grid">
+          <div class="duel">
+            <div class="duel-head">
+              <div class="duel-title">Duel 01 · A vs D</div>
+              <div class="duel-no">01</div>
+            </div>
+
+            <div class="match-list">
+              <div class="match-row fourball"><div class="match-type">Fourball 01</div><div class="match-pair">A1 + A2 <small>vs D1 + D2</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 02</div><div class="match-pair">A3 + A4 <small>vs D3 + D4</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 03</div><div class="match-pair">A5 + A6 <small>vs D5 + D6</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 04</div><div class="match-pair">A7 + A8 <small>vs D7 + D8</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 01</div><div class="match-pair">A9 <small>vs D9</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 02</div><div class="match-pair">A10 <small>vs D10</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 03</div><div class="match-pair">A11 <small>vs D11</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 04</div><div class="match-pair">A12 <small>vs D12</small></div></div>
+            </div>
+          </div>
+
+          <div class="duel">
+            <div class="duel-head">
+              <div class="duel-title">Duel 02 · B vs C</div>
+              <div class="duel-no">02</div>
+            </div>
+
+            <div class="match-list">
+              <div class="match-row fourball"><div class="match-type">Fourball 01</div><div class="match-pair">B1 + B2 <small>vs C1 + C2</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 02</div><div class="match-pair">B3 + B4 <small>vs C3 + C4</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 03</div><div class="match-pair">B5 + B6 <small>vs C5 + C6</small></div></div>
+              <div class="match-row fourball"><div class="match-type">Fourball 04</div><div class="match-pair">B7 + B8 <small>vs C7 + C8</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 01</div><div class="match-pair">B9 <small>vs C9</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 02</div><div class="match-pair">B10 <small>vs C10</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 03</div><div class="match-pair">B11 <small>vs C11</small></div></div>
+              <div class="match-row singles"><div class="match-type">Singles 04</div><div class="match-pair">B12 <small>vs C12</small></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="match-summary">
+          <div class="summary-box"><strong>08</strong><span>Match / Duel</span></div>
+          <div class="summary-box"><strong>16</strong><span>Match / Leg</span></div>
+          <div class="summary-box"><strong>32</strong><span>Golfer thi đấu</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:18px">
+      <strong>Nguyên tắc thi đấu:</strong>
+      Mỗi golfer thi đấu tối đa 01 Match trong một Leg.
+      Pairing được Captain đăng ký trước tee time tối thiểu 24 giờ.
+    </div>
+  </section>
+
+  <section id="scoring">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">04 / Scoring system</div>
+        <h2>Hai lớp điểm.<br>Một bảng xếp hạng.</h2>
+      </div>
+    </div>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <span class="badge">Match Points</span>
+        <div class="score">1 · 0.5 · 0</div>
+        <p><strong>Thắng: 1</strong> · Hòa: 0,5 · Thua: 0</p>
+        <p class="small muted">Điểm được ghi nhận cho từng Match Play.</p>
+      </div>
+
+      <div class="score-card">
+        <span class="badge badge-gold">League Points</span>
+        <div class="score">3 · 1 · 0</div>
+        <p><strong>Thắng Duel: 3</strong> · Hòa: 1 · Thua: 0</p>
+        <p class="small muted">Điểm quyết định thứ hạng CLB sau toàn mùa.</p>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:18px">
+      <div class="card card-dark">
+        <div class="card-label">Example 01</div>
+        <h3>A 5–3 B</h3>
+        <p>A nhận 5 Match Points và 3 League Points. B nhận 3 Match Points và 0 League Points.</p>
+      </div>
+
+      <div class="card card-dark">
+        <div class="card-label">Example 02</div>
+        <h3>C 4–4 D</h3>
+        <p>Mỗi CLB nhận 4 Match Points và 1 League Point.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ranking">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">05 / Championship ranking</div>
+        <h2>Đường đến<br>ngôi vô địch.</h2>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="rank-list">
+        <div class="rank-row">
+          <b>01</b>
+          <div><strong>League Points</strong><span>Tổng điểm từ 3 cuộc đối đầu.</span></div>
+        </div>
+        <div class="rank-row">
+          <b>02</b>
+          <div><strong>Head-to-Head</strong><span>Kết quả đối đầu giữa các CLB bằng điểm.</span></div>
+        </div>
+        <div class="rank-row">
+          <b>03</b>
+          <div><strong>Total Match Points</strong><span>Tổng Match Points toàn mùa.</span></div>
+        </div>
+        <div class="rank-row">
+          <b>04</b>
+          <div><strong>Total Match Wins</strong><span>Tổng số Match Play thắng.</span></div>
+        </div>
+        <div class="rank-row">
+          <b>05</b>
+          <div><strong>Play-off</strong><span>Áp dụng nếu vẫn chưa phân định.</span></div>
+        </div>
+      </div>
+
+      <div class="card card-dark">
+        <div class="card-label">Champion criteria</div>
+        <h3>Không chỉ thắng một ngày.</h3>
+        <p>
+          Nhà vô địch phải duy trì hiệu suất ổn định qua cả 3 Legs,
+          vượt qua đủ 3 đối thủ và tích lũy thành tích tốt nhất toàn mùa.
+        </p>
+        <div class="headline-stat">
+          <b>03</b>
+          <span>Cuộc đối đầu mỗi CLB</span>
+        </div>
+        <div class="headline-stat">
+          <b>08</b>
+          <span>Match Play mỗi cuộc đối đầu</span>
+        </div>
+        <div class="headline-stat">
+          <b>48</b>
+          <span>Match Play trong mùa giải</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="awards">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">06 / Season awards</div>
+        <h2>Danh hiệu cho người<br>tạo khác biệt.</h2>
+      </div>
+    </div>
+
+    <div class="awards">
+      <div class="award primary">
+        <div class="card-label">Main title</div>
+        <h3>Interclub Champion</h3>
+        <p>CLB có tổng League Points cao nhất sau 3 Legs.</p>
+      </div>
+
+      <div class="award">
+        <div class="card-label">Individual</div>
+        <h3>MVP</h3>
+        <p class="muted">Golfer có tổng Match Points cá nhân cao nhất.</p>
+      </div>
+
+      <div class="award">
+        <div class="card-label">Individual</div>
+        <h3>Most Wins</h3>
+        <p class="muted">Golfer có số Match Play thắng nhiều nhất.</p>
+      </div>
+
+      <div class="award">
+        <div class="card-label">Pair award</div>
+        <h3>Best Fourball</h3>
+        <p class="muted">Cặp golfer có nhiều Fourball thắng nhất.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="operations">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">07 / Operations</div>
+        <h2>Rõ luật.<br>Gọn vận hành.</h2>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-label">Registration & pairing</div>
+        <h3>Đội hình được khóa trước giờ đấu</h3>
+        <ul>
+          <li>12 golfer chính thức và tối đa 2 golfer dự bị/CLB.</li>
+          <li>Golfer dự bị phải thuộc danh sách đăng ký của CLB.</li>
+          <li>Captain chốt pairing trước tee time tối thiểu 24 giờ.</li>
+          <li>Không thay đổi sau deadline nếu chưa được BTC xác nhận.</li>
+          <li>Một golfer chỉ thi đấu cho một CLB trong cả mùa giải.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Rules & result confirmation</div>
+        <h3>Một chuẩn chung cho toàn mùa</h3>
+        <ul>
+          <li>Match Play 18 hố, Net theo handicap do BTC công bố.</li>
+          <li>Áp dụng Rules of Golf và Local Rules của sân.</li>
+          <li>Captain hai bên xác nhận kết quả sau trận.</li>
+          <li>BTC là đơn vị xử lý cuối cùng các tình huống phát sinh.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <div class="card-label">Player replacement policy</div>
+      <h3>Quy định thay người</h3>
+
+      <div class="checks">
+        <div class="check"><strong>Báo vắng trước deadline:</strong> được thay bằng golfer dự bị hợp lệ.</div>
+        <div class="check"><strong>Bệnh / khẩn cấp trong 24 giờ:</strong> Captain đề xuất, BTC xác nhận.</div>
+        <div class="check"><strong>No-show Singles:</strong> golfer vắng mặt thua Match.</div>
+        <div class="check"><strong>No-show Fourball:</strong> thực hiện theo phương án BTC công bố trước Leg.</div>
+        <div class="check"><strong>Đã vào sân nhưng bỏ cuộc:</strong> BTC xác nhận kết quả theo tình huống.</div>
+        <div class="check"><strong>Hết golfer dự bị:</strong> không được mượn golfer CLB khác.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="final">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">08 / Final checklist</div>
+        <h2>Những nội dung cần<br>khóa trước khi công bố.</h2>
+      </div>
+    </div>
+
+    <div class="checks">
+      <div class="check">□ Tên sân và địa điểm từng Leg</div>
+      <div class="check">□ Ngày thi đấu và tee time</div>
+      <div class="check">□ Handicap Index cutoff và allowance</div>
+      <div class="check">□ Quy định no-show Fourball</div>
+      <div class="check">□ Thể thức play-off</div>
+      <div class="check">□ Tie-break MVP / Most Wins / Best Fourball</div>
+    </div>
+
+    <div class="callout" style="margin-top:18px">
+      <strong>Proposal format:</strong>
+      Các nội dung trong dấu [ ] cần được BTC cập nhật trước khi phát hành bản chính thức.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="shell footer-inner">
+    <div>
+      <div class="footer-title">INTERCLUB MATCH PLAY SERIES 2026</div>
+      <div class="footer-sub">4 CLB · 48 GOLFER · 3 LEGS · 48 MATCH · 1 CHAMPION</div>
+    </div>
+    <button class="btn btn-outline" onclick="window.print()">Print / Save PDF</button>
+  </div>
+</footer>
+
+<script>
+const tabs = document.querySelectorAll(".leg-tab");
+const panels = document.querySelectorAll(".leg-panel");
+
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    tabs.forEach(item => item.classList.remove("active"));
+    panels.forEach(panel => panel.classList.remove("active"));
+
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.leg).classList.add("active");
+  });
+});
+</script>
+
+</body>
+</html>
