@@ -161,14 +161,14 @@ document.getElementById('btn-a5-long').addEventListener('click', async()=>{
     });
     const imgData = canvas.toDataURL('image/jpeg', 1);
     pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidthMM, pdfHeightMM);
-    pdf.save('GOLF279-A5-longpage-lien-mach.pdf');
+    pdf.save('Thư Mời_.pdf');
   }catch(e){
     console.error(e);
     alert('Lỗi: '+e.message);
   }finally{
     target.classList.remove('xuat-pdf');
     btn.style.display='block';
-    btn.textContent='⬇ Tải A5 Longpage Nét (1 trang)';
+    btn.textContent='⬇ Tải';
     btn.disabled=false;
   }
 });
