@@ -158,7 +158,7 @@ document.getElementById('btn-dl').addEventListener('click', async function(){
       if(m && m[1]) ten = m[1].trim();
     }
     ten = ten.replace(/[\\/:*?"<>|]/g,'').substring(0,40).trim();
-    var fname = ten ? ('Thu Moi_' + ten + '.pdf') : 'Thu Moi.pdf';
+    var fname = ten ? ('Thư Mời_' + ten + '.pdf') : 'Thu Moi.pdf';
     pdf.save(fname);
   }catch(e){
     console.error(e);
