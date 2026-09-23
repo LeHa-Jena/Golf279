@@ -124,32 +124,21 @@ const _cp = CanvasRenderingContext2D.prototype.createPattern;
 CanvasRenderingContext2D.prototype.createPattern = function(i,r){try{if(!i||i.width===0||i.height===0)return null;return _cp.call(this,i,r)}catch(e){return null}};
 
 document.getElementById('btn-a5-long').addEventListener('click', async()=>{
-  const t = document.getElementById('full-capture');
-  const btn = document.getElementById('btn-a5-long');
-  btn.textContent='Đang tạo...';
-  try{
-    await document.fonts.ready;
-    const canvas = await html2canvas(t,{
-      scale:2, useCORS:true, allowTaint:true, backgroundColor:'#fdfcf8',
-      windowWidth:720, scrollX:0, scrollY:0,
-      onclone:(doc)=>{
-        const f = doc.getElementById('full-capture');
-        if(f){ f.style.width='720px'; f.style.maxWidth='720px'; }
-        doc.querySelectorAll('#full-capture *').forEach(el=>{
-          el.style.letterSpacing='0px';
-          el.style.minWidth='0';
-          el.style.overflowWrap='anywhere';
-        });
-      }
-    });
-    let g = (t.querySelector('[contenteditable]')?.innerText || '').trim();
-    if(!g){ const m=t.innerText.match(/Kính gửi[:\s]*([^\n]+)/i); if(m) g=m[1].trim(); }
-    g=g.replace(/[\\/:*?"<>|]/g,'').trim();
-    const {jsPDF}=window.jspdf;
-    const W=130; const H=W*(canvas.height/canvas.width);
-    const pdf=new jsPDF({orientation:'p',unit:'mm',format:[W,H]});
-    pdf.addImage(canvas.toDataURL('image/png'),'PNG',0,0,W,H); // PNG cho nét
-    pdf.save(g?`Thu Moi_${g}.pdf`:`Thu Moi.pdf`);
-  }catch(e){ alert(e.message); } finally{ btn.textContent='⬇ Tải'; }
+  await document.fonts.ready;
+  let g = (document.getElementById('full-capture').querySelector('[contenteditable]')?.innerText || '').trim();
+  if(!g){ const m=document.getElementById('full-capture').innerText.match(/Kính gửi[:\s]*([^\n]+)/i); if(m) g=m[1].trim(); }
+  g=g.replace(/[\\/:*?"<>|]/g,'').trim();
+  document.title = g? `Thu Moi_${g}` : `Thu Moi`;
+  // In vector - chữ vẫn là chữ, zoom 1000% vẫn nét như PDF gốc, hết lệch full trang dài
+  window.print();
 });
 </script>
+
+<style>
+@media print{
+  #btn-a5-long{display:none!important}
+  body{background:#fff!important; margin:0!important; padding:0!important;}
+  #full-capture{width:210mm!important; max-width:210mm!important; margin:0 auto!important; box-shadow:none!important; border-radius:0!important; padding:0!important;}
+  #thu-moi-goc{box-shadow:none!important; border-radius:0!important; border:none!important;}
+}
+</style>
