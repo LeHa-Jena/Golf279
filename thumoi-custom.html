@@ -18,14 +18,14 @@
   div.rounded-\[10px\].bg-\[\#0f2e24\].px-4.py-2\.5 {
     display:none !important;
   }#full-capture{
-  width: 30px !important;
+  width: 100px !important;
   max-width: 100% !important;
   margin: 0 auto !important;
   overflow:hidden;
   padding-bottom:0!important;
 }
 #full-capture img{
-  max-width: 500% !important;
+  max-width: 100% !important;
   height: auto !important;
   display: block;
 }
@@ -134,31 +134,53 @@ document.getElementById('btn-dl').addEventListener('click', async()=>{
     // Ép về kích thước chuẩn trước khi chụp
     const prevTransform = target.style.transform;
     target.style.transform = 'none';
-    
-    const dataUrl = await htmlToImage.toJpeg(target, {
-      quality: 3,
-      pixelRatio: 3,
-      backgroundColor: '#ffffff',
-      width: target.offsetWidth,
-      height: target.scrollHeight,
-      style: { transform: 'none', margin: '0 auto' }
-    });
-    
-    target.style.transform = prevTransform;
-    
-    const img = new Image();
-    img.src = dataUrl;
-    await new Promise(r=>img.onload=r);
-    
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({orientation:'p', unit:'px', format:[img.width, img.height]});
-    pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-    pdf.save('ThuMoi_.pdf');
-  }catch(e){
-    console.error(e);
-    alert('Lỗi: '+e.message);
-  }finally{
-    btn.textContent=old; btn.disabled=false;
+    const target = document.getElementById('full-capture');
+const btn = document.getElementById('btn-dl');
+if(!target) return;
+const old = btn.textContent;
+btn.textContent = '⏳ Đang tạo...'; btn.disabled=true;
+try{
+  await document.fonts.ready;
+  await new Promise(r=>setTimeout(r,150));
+  
+  const prevTransform = target.style.transform;
+  target.style.transform = 'none';
+  const target = document.getElementById('full-capture');
+const btn = document.getElementById('btn-dl');
+if(!target) return;
+const old = btn.textContent;
+btn.textContent = '⏳ Đang tạo...'; btn.disabled=true;
+try{
+  await document.fonts.ready;
+  await new Promise(r=>setTimeout(r,150));
+  
+  const prevTransform = target.style.transform;
+  target.style.transform = 'none';
+  
+  const dataUrl = await htmlToImage.toPng(target, {
+    quality: 1,
+    pixelRatio: 3,
+    backgroundColor: '#ffffff',
+    cacheBust: true,
+    width: target.offsetWidth,
+    height: target.scrollHeight,
+    style: { transform: 'none', margin: '0 auto' }
+  });
+  
+  target.style.transform = prevTransform;
+  
+  const img = new Image();
+  img.src = dataUrl;
+  await new Promise(r=>img.onload=r);
+  
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({orientation:'p', unit:'px', format:[img.width, img.height], compress: true});
+  pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height, undefined, 'FAST');
+  
+  // --- LẤY TÊN ĐỂ ĐẶT FILE ---
+  let guest = "";
+  // 1. Ưu tiên ô content
+}
   }
 });
 </script>
