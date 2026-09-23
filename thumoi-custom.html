@@ -167,7 +167,7 @@ document.getElementById('btn-a5-long').addEventListener('click', async()=>{
     const {jsPDF} = window.jspdf;
     const W = 130; const H = W*(canvas.height/canvas.width);
     const pdf = new jsPDF({orientation:'p',unit:'mm',format:[W,H]});
-    pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',0,0,W,H);
+    pdf.addImage(canvas.toDataURL('image/jpeg',1),'JPEG',0,0,W,H);
     pdf.save(g?`Thu Moi_${g}.pdf`:`Thu Moi.pdf`);
   }catch(e){ alert('Lỗi: '+e.message); console.error(e); }
 });
