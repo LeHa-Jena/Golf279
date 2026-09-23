@@ -165,44 +165,22 @@ document.getElementById('btn-dl').addEventListener('click', async()=>{
   btn.textContent='⏳ Đang tạo...'; btn.disabled=true;
   try{
     await document.fonts.ready;
-    await new Promise(r=>setTimeout(r,1000));
+    await new Promise(r=>setTimeout(r,400));
     if(typeof html2canvas==='undefined'){ throw new Error('html2canvas chưa tải được, check mạng'); }
     const jsPDFClass=getJsPDF();
     if(!jsPDFClass){ throw new Error('jsPDF chưa tải được (window.jspdf undefined) - thử tắt chặn quảng cáo / đổi wifi'); }
     
     const prev=target.style.transform;
     target.style.transform='none';
-	  const editable = target.querySelector('[contenteditable]');
-if(editable){
-  editable.style.minWidth='160px';
-  editable.style.display='inline-block';
-  editable.style.letterSpacing='0px';
-}
     let canvas = await html2canvas(target, {
-  scale: 2,
-  windowWidth: 520,
-  scrollY: 0,
-  scrollX: 0,
+      scale: 2.7,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      windowWidth: target.scrollWidth,
       logging: false,
-      // CŨ:
-onclone: (doc)=>{ doc.querySelectorAll('canvas').forEach(c=>{ if(c.width===0||c.height===0){ c.width=1; c.height=1; } }); }
-
-// MỚI - thay toàn bộ bằng:
-onclone: (doc)=>{
-  doc.querySelectorAll('canvas').forEach(c=>{ if(c.width===0||c.height===0){ c.width=1; c.height=1; } });
-  const t = doc.getElementById('full-capture');
-  if(t){
-    t.style.transform='none';
-    t.style.width='520px';
-    t.style.maxWidth='520px';
-    t.style.letterSpacing='0px';
-    t.querySelectorAll('*').forEach(el=>{
-      el.style.transform='none';
-      el.style.letterSpacing='0px';
-      el.style.wordSpacing='normal';
+      onclone: (doc)=>{ doc.querySelectorAll('canvas').forEach(c=>{ if(c.width===0||c.height===0){ c.width=1; c.height=1; } }); }
     });
-  }
-}
     target.style.transform=prev;
     canvas=trimWhite(canvas);
     const pdf = new jsPDFClass({orientation:'p', unit:'px', format:[canvas.width, canvas.height], hotfixes:['px_scaling']});
