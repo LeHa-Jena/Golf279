@@ -18,14 +18,14 @@
   div.rounded-\[10px\].bg-\[\#0f2e24\].px-4.py-2\.5 {
     display:none !important;
   }#full-capture{
-  width: 100px !important;
+  width: 30px !important;
   max-width: 100% !important;
   margin: 0 auto !important;
   overflow:hidden;
   padding-bottom:0!important;
 }
 #full-capture img{
-  max-width: 100% !important;
+  max-width: 200% !important;
   height: auto !important;
   display: block;
 }
@@ -118,77 +118,64 @@ Error generating stack: `+o.message+`
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
 </div>
 </div>
+
+
 <button id="btn-dl" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:#0f2e24;color:#fff;padding:16px 24px;border-radius:999px;border:none;font-weight:800;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:15px;">⬇ DOWNLOAD</button>
 
-<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11/dist/html-to-image.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/dist/html-to-image.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
 <script>
 document.getElementById('btn-dl').addEventListener('click', async()=>{
   const target = document.getElementById('full-capture');
   const btn = document.getElementById('btn-dl');
-  if(!target) return;
+  if(!target) return alert('Không thấy #full-capture');
   const old = btn.textContent;
-  btn.textContent = '⏳ Đang tạo...'; btn.disabled=true;
+  btn.textContent = '⏳ Đang tạo...';
+  btn.disabled = true;
+  const backup = target.getAttribute('style') || '';
   try{
     await document.fonts.ready;
-    // Ép về kích thước chuẩn trước khi chụp
-    const prevTransform = target.style.transform;
     target.style.transform = 'none';
-    const target = document.getElementById('full-capture');
-const btn = document.getElementById('btn-dl');
-if(!target) return;
-const old = btn.textContent;
-btn.textContent = '⏳ Đang tạo...'; btn.disabled=true;
-try{
-  await document.fonts.ready;
-  await new Promise(r=>setTimeout(r,150));
-  
-  const prevTransform = target.style.transform;
-  target.style.transform = 'none';
-  const target = document.getElementById('full-capture');
-const btn = document.getElementById('btn-dl');
-if(!target) return;
-const old = btn.textContent;
-btn.textContent = '⏳ Đang tạo...'; btn.disabled=true;
-try{
-  await document.fonts.ready;
-  await new Promise(r=>setTimeout(r,150));
-  
-  const prevTransform = target.style.transform;
-  target.style.transform = 'none';
-  
-  const dataUrl = await htmlToImage.toPng(target, {
-    quality: 1,
-    pixelRatio: 3,
-    backgroundColor: '#ffffff',
-    cacheBust: true,
-    width: target.offsetWidth,
-    height: target.scrollHeight,
-    style: { transform: 'none', margin: '0 auto' }
-  });
-  
-  target.style.transform = prevTransform;
-  
-  const img = new Image();
-  img.src = dataUrl;
-  await new Promise(r=>img.onload=r);
-  
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF({orientation:'p', unit:'px', format:[img.width, img.height], compress: true});
-  pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height, undefined, 'FAST');
-  
-  // --- LẤY TÊN ĐỂ ĐẶT FILE ---
-  let guest = "";
-  // 1. Ưu tiên ô content
-}
+    target.style.width = '450px';
+    target.style.maxWidth = '450px';
+
+    const dataUrl = await htmlToImage.toPng(target, {
+      quality: 1,
+      pixelRatio: 2.5,
+      backgroundColor: '#ffffff',
+      width: target.offsetWidth,
+      height: target.scrollHeight,
+      style: { transform: 'none', margin: '0 auto' }
+    });
+
+    const img = new Image();
+    img.src = dataUrl;
+    await new Promise(r => img.onload = r);
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'p', unit:'px', format:[img.width, img.height], compress:true});
+    pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height, undefined, 'FAST');
+
+    let ten = "";
+    const edit = target.querySelector('[contenteditable]');
+    if(edit && edit.innerText.trim()) ten = edit.innerText.trim();
+    else {
+      const m = target.innerText.match(/Kính gửi\s*:?\s*([^\n\r]+)/i);
+      if(m) ten = m[1].trim();
+    }
+    ten = ten.replace(/[\\/:*?"<>|]/g,'').substring(0,40).trim();
+    pdf.save(ten ? `Thu Moi_${ten}.pdf` : `Thu Moi.pdf`);
+
+  }catch(e){
+    console.error(e);
+    alert('Lỗi: ' + e.message);
+  }finally{
+    target.setAttribute('style', backup);
+    btn.textContent = old;
+    btn.disabled = false;
   }
 });
 </script>
-</script>
-<style>
-#full-capture{width:500px!important; max-width:450px!important; margin:0 auto!important;}
-#full-capture *{box-sizing:border-box!important;}
-#full-capture img{max-width:200%!important; height:auto!important; display:block;}
-</style>
 </body>
 </html>
