@@ -109,85 +109,33 @@ Error generating stack: `+o.message+`
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
   
 </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
-  #btn-a5-long{
-    position:fixed; bottom:20px; right:20px; z-index:99999;
-    background:#0f2e24; color:#fff; padding:14px 22px; border-radius:999px;
-    border:none; font-weight:800; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,.3);
-  }
- .xuat-pdf [contenteditable]{
-    border-bottom:none!important;
-    line-height:1.35!important;
-    padding-bottom:0!important;
-  }
-  #full-capture {
-    overflow:hidden;
-    padding-bottom:0!important;
-  }
+  #btn-a5-long{position:fixed;bottom:20px;right:20px;z-index:99999;background:#0f2e24;color:#fff;padding:14px 22px;border-radius:999px;border:none;font-weight:800;cursor:pointer}
 </style>
-<button id="btn-a5-long" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:#0f2e24;color:#fff;padding:14px 22px;border-radius:999px;border:none;font-weight:800">⬇ Tải</button>
-
+<button id="btn-a5-long">⬇ Tải</button>
 <script>
+// VÁ LỖI createPattern width=0
+const _cp = CanvasRenderingContext2D.prototype.createPattern;
+CanvasRenderingContext2D.prototype.createPattern = function(i,r){try{if(!i||i.width===0||i.height===0)return null;return _cp.call(this,i,r)}catch(e){return null}};
+
 document.getElementById('btn-a5-long').addEventListener('click', async()=>{
-  const btn = document.getElementById('btn-a5-long');
-  const target = document.getElementById('full-capture');
-  if(!target){ alert('Không tìm thấy #full-capture'); return; }
-  btn.textContent='Đang tạo...';
+  const t = document.getElementById('full-capture');
   try{
-    const canvas0 = await html2canvas(target, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#fdfcf8',
-      windowWidth: 700,
-      logging:false
-    });
-
-    // cắt đuôi trắng - có lỗi thì bỏ qua không crash
-    let canvas = canvas0;
-    try{
-      const ctx = canvas0.getContext('2d');
-      const data = ctx.getImageData(0,0,canvas0.width,canvas0.height).data;
-      let bottom = canvas0.height-1;
-      for(let y=canvas0.height-1; y>=0; y--){
-        let white=true;
-        for(let x=0;x<canvas0.width;x+=8){
-          let i=(y*canvas0.width+x)*4;
-          if(data[i]<250||data[i+1]<250||data[i+2]<250){ white=false; break; }
-        }
-        if(!white){ bottom=y; break; }
-      }
-      let cut = Math.min(canvas0.height, bottom+20);
-      if(cut < canvas0.height){
-        let c=document.createElement('canvas'); c.width=canvas0.width; c.height=cut;
-        c.getContext('2d').drawImage(canvas0,0,0); canvas=c;
-      }
-    }catch(e){ console.log('skip trim', e); }
-
-    const { jsPDF } = window.jspdf;
-    const pdfWidthMM = 130;
-    const pdfHeightMM = pdfWidthMM * (canvas.height / canvas.width);
-    const pdf = new jsPDF({orientation:'p',unit:'mm',format:[pdfWidthMM, pdfHeightMM]});
-
-    let guestName = '';
-    let ed = target.querySelector('[contenteditable]');
-    if(ed) guestName = ed.innerText.trim();
-    if(!guestName){
-      let m = target.innerText.match(/Kính gửi[:\s]*([^\n]+)/i);
-      if(m) guestName = m[1].trim();
-    }
-    guestName = guestName.replace(/[\\/:*?"<>|]/g,'').trim();
-
-    pdf.addImage(canvas.toDataURL('image/jpeg',0.85), 'JPEG', 0,0,pdfWidthMM,pdfHeightMM);
-    pdf.save(guestName?`Thu Moi_${guestName}.pdf`:`Thu Moi.pdf`);
-  }catch(err){
-    alert('Lỗi: '+ err.message);
-    console.error(err);
-  }finally{
-    btn.textContent='⬇ Tải';
-  }
+    const canvas = await html2canvas(t,{scale:2,useCORS:true,allowTaint:true,backgroundColor:'#fdfcf8',windowWidth:700});
+    let g = '';
+    const ed = t.querySelector('[contenteditable]');
+    if(ed) g = ed.innerText.trim();
+    if(!g){ const m = t.innerText.match(/Kính gửi[:\s]*([^\n]+)/i); if(m) g=m[1].trim(); }
+    g = g.replace(/[\\/:*?"<>|]/g,'').trim();
+    const {jsPDF} = window.jspdf;
+    const W = 130; const H = W*(canvas.height/canvas.width);
+    const pdf = new jsPDF({orientation:'p',unit:'mm',format:[W,H]});
+    pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',0,0,W,H);
+    pdf.save(g?`Thu Moi_${g}.pdf`:`Thu Moi.pdf`);
+  }catch(e){ alert('Lỗi: '+e.message); }
 });
 </script>
 </body>
