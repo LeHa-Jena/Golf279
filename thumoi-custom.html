@@ -18,7 +18,7 @@
   div.rounded-\[10px\].bg-\[\#0f2e24\].px-4.py-2\.5 {
     display:none !important;
   }#full-capture{
-  width: 400px !important;
+  width: 30px !important;
   max-width: 100% !important;
   margin: 0 auto !important;
   overflow:hidden;
@@ -72,6 +72,7 @@
     <div style="text-align:center;padding:6px 30px 0;">
       <div style="font-family:'EB Garamond',serif;font-size:10px;letter-spacing:.18em;color:#8a9a94;font-weight:500;text-transform:uppercase;
     ">GOLF279 MINI TOUR 2026 – DALAT EDITION </div>
+      <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.18em;color:#0f2e24;font-weight:700;margin-top:6px;">22–23.10.2026 | ĐÀ LẠT</div>
       <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.18em;color:#0f2e24;font-weight:700;margin-top:6px;">22–23.10.2026 | ĐÀ LẠT</div>
       <div style="height:1px;background:linear-gradient(to right,transparent,#d9e2d0,transparent);margin:20px auto 0;max-width:320px;"></div>
     </div>
@@ -184,11 +185,11 @@ document.getElementById('btn-dl').addEventListener('click', async()=>{
     target.style.transform=prev;
     canvas=trimWhite(canvas);
     const pdf = new jsPDFClass({orientation:'p', unit:'px', format:[canvas.width, canvas.height], hotfixes:['px_scaling']});
-    pdf.addImage(canvas.toDataURL('image/jpeg',1), 'JPEG', 0,0, canvas.width, canvas.height);
+    pdf.addImage(canvas.toDataURL('image/jpeg',2), 'JPEG', 0,0, canvas.width, canvas.height);
     let g=(target.querySelector('[contenteditable]')?.innerText||'').trim();
     if(!g){ const m=target.innerText.match(/Kính gửi[:\s]*([^\n]+)/i); if(m) g=m[1].trim(); }
     g=g.replace(/[\\/:*?"<>|]/g,'').trim();
-    pdf.save(g?`Thu Moi_${g}.pdf`:`GOLF279-DALAT.pdf`);
+    pdf.save(g?`Thu Moi_${g}.pdf`:``);
   }catch(e){
     console.error(e);
     alert('Lỗi: '+e.message);
