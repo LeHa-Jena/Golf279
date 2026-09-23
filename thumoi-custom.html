@@ -140,14 +140,14 @@ function trimWhite(canvas){
     const ctx=canvas.getContext('2d');
     const w=canvas.width, h=canvas.height;
     const data=ctx.getImageData(0,0,w,h).data;
-    let bottom=h-1;
+    let bottom=h-2;
     outer: for(let y=h-1;y>=0;y--){
       for(let x=0;x<w;x+=60){
         const i=(y*w+x)*4;
         if(data[i]<250 || data[i+1]<250 || data[i+2]<250){ bottom=y; break outer; }
       }
     }
-    const cut=Math.min(h,bottom+00);
+    const cut=Math.min(h,bottom+40);
     if(cut < h-20){
       const c=document.createElement('canvas'); c.width=w; c.height=cut;
       c.getContext('2d').drawImage(canvas,0,0);
