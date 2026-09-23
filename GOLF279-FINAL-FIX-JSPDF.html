@@ -18,7 +18,7 @@
   div.rounded-\[10px\].bg-\[\#0f2e24\].px-4.py-2\.5 {
     display:none !important;
   }#full-capture{
-  width: 600px !important;
+  width: 400px !important;
   max-width: 100% !important;
   margin: 0 auto !important;
   overflow:hidden;
@@ -147,7 +147,7 @@ function trimWhite(canvas){
         if(data[i]<250 || data[i+1]<250 || data[i+2]<250){ bottom=y; break outer; }
       }
     }
-    const cut=Math.min(h,bottom+10);
+    const cut=Math.min(h,bottom+00);
     if(cut < h-20){
       const c=document.createElement('canvas'); c.width=w; c.height=cut;
       c.getContext('2d').drawImage(canvas,0,0);
@@ -199,7 +199,7 @@ document.getElementById('btn-dl').addEventListener('click', async()=>{
 </script>
 
 <style>
-#full-capture{width:520px!important; max-width:520px!important; margin:0 auto!important;}
+#full-capture{width:500px!important; max-width:450px!important; margin:0 auto!important;}
 #full-capture *{box-sizing:border-box!important;}
 #full-capture img{max-width:200%!important; height:auto!important; display:block;}
 </style>
