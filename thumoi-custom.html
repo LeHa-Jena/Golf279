@@ -18,14 +18,14 @@
   div.rounded-\[10px\].bg-\[\#0f2e24\].px-4.py-2\.5 {
     display:none !important;
   }#full-capture{
-  width: 680px !important;
+  width: 400px !important;
   max-width: 100% !important;
   margin: 0 auto !important;
   overflow:hidden;
   padding-bottom:0!important;
 }
 #full-capture img{
-  max-width: 100% !important;
+  max-width: 200% !important;
   height: auto !important;
   display: block;
 }
@@ -118,27 +118,90 @@ Error generating stack: `+o.message+`
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
 </div>
 </div>
+
+<button id="btn-dl" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:#0f2e24;color:#fff;padding:16px 24px;border-radius:999px;border:none;font-weight:800;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:15px;z-index:999999">⬇ TẢI PDF (bản nét)</button>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
 <script>
 // VÁ LỖI createPattern
 const _cp = CanvasRenderingContext2D.prototype.createPattern;
-CanvasRenderingContext2D.prototype.createPattern = function(i,r){try{if(!i||i.width===0||i.height===0)return null;return _cp.call(this,i,r)}catch(e){return null}};
+CanvasRenderingContext2D.prototype.createPattern = function(i,r){
+  try{ if(!i || (i.width!==undefined && (i.width===0 || i.height===0))) return null; return _cp.call(this,i,r);}catch(e){return null;}
+};
 
-document.getElementById('btn-a5-long').addEventListener('click', async()=>{
-  await document.fonts.ready;
-  let g = (document.getElementById('full-capture').querySelector('[contenteditable]')?.innerText || '').trim();
-  if(!g){ const m=document.getElementById('full-capture').innerText.match(/Kính gửi[:\s]*([^\n]+)/i); if(m) g=m[1].trim(); }
-  g=g.replace(/[\\/:*?"<>|]/g,'').trim();
-  document.title = g? `Thu Moi_${g}` : `Thu Moi`;
-  // In vector - chữ vẫn là chữ, zoom 1000% vẫn nét như PDF gốc, hết lệch full trang dài
-  window.print();
+function getJsPDF(){
+  return (window.jspdf && window.jspdf.jsPDF) || window.jsPDF || (window.jspdf && window.jspdf.default) || null;
+}
+
+function trimWhite(canvas){
+  try{
+    const ctx=canvas.getContext('2d');
+    const w=canvas.width, h=canvas.height;
+    const data=ctx.getImageData(0,0,w,h).data;
+    let bottom=h-1;
+    outer: for(let y=h-1;y>=0;y--){
+      for(let x=0;x<w;x+=60){
+        const i=(y*w+x)*4;
+        if(data[i]<250 || data[i+1]<250 || data[i+2]<250){ bottom=y; break outer; }
+      }
+    }
+    const cut=Math.min(h,bottom+00);
+    if(cut < h-20){
+      const c=document.createElement('canvas'); c.width=w; c.height=cut;
+      c.getContext('2d').drawImage(canvas,0,0);
+      return c;
+    }
+  }catch(e){}
+  return canvas;
+}
+
+document.getElementById('btn-dl').addEventListener('click', async()=>{
+  const target=document.getElementById('full-capture');
+  const btn=document.getElementById('btn-dl');
+  if(!target){ alert('Không thấy thư mời'); return; }
+  const old=btn.textContent;
+  btn.textContent='⏳ Đang tạo...'; btn.disabled=true;
+  try{
+    await document.fonts.ready;
+    await new Promise(r=>setTimeout(r,400));
+    if(typeof html2canvas==='undefined'){ throw new Error('html2canvas chưa tải được, check mạng'); }
+    const jsPDFClass=getJsPDF();
+    if(!jsPDFClass){ throw new Error('jsPDF chưa tải được (window.jspdf undefined) - thử tắt chặn quảng cáo / đổi wifi'); }
+    
+    const prev=target.style.transform;
+    target.style.transform='none';
+    let canvas = await html2canvas(target, {
+      scale: 2.7,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      windowWidth: target.scrollWidth,
+      logging: false,
+      onclone: (doc)=>{ doc.querySelectorAll('canvas').forEach(c=>{ if(c.width===0||c.height===0){ c.width=1; c.height=1; } }); }
+    });
+    target.style.transform=prev;
+    canvas=trimWhite(canvas);
+    const pdf = new jsPDFClass({orientation:'p', unit:'px', format:[canvas.width, canvas.height], hotfixes:['px_scaling']});
+    pdf.addImage(canvas.toDataURL('image/jpeg',1), 'JPEG', 0,0, canvas.width, canvas.height);
+    let g=(target.querySelector('[contenteditable]')?.innerText||'').trim();
+    if(!g){ const m=target.innerText.match(/Kính gửi[:\s]*([^\n]+)/i); if(m) g=m[1].trim(); }
+    g=g.replace(/[\\/:*?"<>|]/g,'').trim();
+    pdf.save(g?`Thu Moi_${g}.pdf`:`GOLF279-DALAT.pdf`);
+  }catch(e){
+    console.error(e);
+    alert('Lỗi: '+e.message);
+  }finally{
+    btn.textContent=old; btn.disabled=false;
+  }
 });
 </script>
 
 <style>
-@media print{
-  #btn-a5-long{display:none!important}
-  body{background:#fff!important; margin:0!important; padding:0!important;}
-  #full-capture{width:210mm!important; max-width:210mm!important; margin:0 auto!important; box-shadow:none!important; border-radius:0!important; padding:0!important;}
-  #thu-moi-goc{box-shadow:none!important; border-radius:0!important; border:none!important;}
-}
+#full-capture{width:500px!important; max-width:450px!important; margin:0 auto!important;}
+#full-capture *{box-sizing:border-box!important;}
+#full-capture img{max-width:200%!important; height:auto!important; display:block;}
 </style>
+</body>
+</html>
