@@ -143,7 +143,7 @@ function trimWhiteBottom(canvas){
     if(!isWhiteRow){ bottom = y; break; }
   }
   // cắt đuôi trắng dư 20px
-  const cutHeight = Math.min(h, bottom + 20);
+  const cutHeight = Math.min(h, bottom + 20); //bottom + 20 : cắt đuôi trắng. Cắt sát: +2, chừa nhiều: +40
   if(cutHeight < h){
     const newCanvas = document.createElement('canvas');
     newCanvas.width = w;
@@ -163,7 +163,7 @@ document.getElementById('btn-a5-long').addEventListener('click', async()=>{
   await new Promise(r=>setTimeout(r,400));
   try{
     let canvas = await html2canvas(target, {
-      scale: 2.5,
+      scale: 2.9,
       useCORS: true,
       backgroundColor: '#fdfcf8',
       logging:false,
@@ -186,7 +186,7 @@ document.getElementById('btn-a5-long').addEventListener('click', async()=>{
     canvas = trimWhiteBottom(canvas);
 
     const { jsPDF } = window.jspdf;
-    const pdfWidthMM = 130; // A5 width
+    const pdfWidthMM = 170; // A5 148, B5 176
     const canvasRatio = canvas.height / canvas.width;
     const pdfHeightMM = pdfWidthMM * canvasRatio;
 
