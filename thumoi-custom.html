@@ -165,19 +165,24 @@ document.getElementById('btn-dl').addEventListener('click', async()=>{
   btn.textContent='⏳ Đang tạo...'; btn.disabled=true;
   try{
     await document.fonts.ready;
-    await new Promise(r=>setTimeout(r,400));
+    await new Promise(r=>setTimeout(r,1000));
     if(typeof html2canvas==='undefined'){ throw new Error('html2canvas chưa tải được, check mạng'); }
     const jsPDFClass=getJsPDF();
     if(!jsPDFClass){ throw new Error('jsPDF chưa tải được (window.jspdf undefined) - thử tắt chặn quảng cáo / đổi wifi'); }
     
     const prev=target.style.transform;
     target.style.transform='none';
+	  const editable = target.querySelector('[contenteditable]');
+if(editable){
+  editable.style.minWidth='160px';
+  editable.style.display='inline-block';
+  editable.style.letterSpacing='0px';
+}
     let canvas = await html2canvas(target, {
-      scale: 2.7,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      windowWidth: target.scrollWidth,
+  scale: 2,
+  windowWidth: 520,
+  scrollY: 0,
+  scrollX: 0,
       logging: false,
       onclone: (doc)=>{ doc.querySelectorAll('canvas').forEach(c=>{ if(c.width===0||c.height===0){ c.width=1; c.height=1; } }); }
     });
