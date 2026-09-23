@@ -120,7 +120,7 @@ function trimWhiteBottom(canvas){
     if(!isWhiteRow){ bottom = y; break; }
   }
   // cắt đuôi trắng dư 20px
-  const cutHeight = Math.min(h, bottom + 60);
+  const cutHeight = Math.min(h, bottom + 20);
   if(cutHeight < h){
     const newCanvas = document.createElement('canvas');
     newCanvas.width = w;
