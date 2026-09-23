@@ -18,14 +18,14 @@
   div.rounded-\[10px\].bg-\[\#0f2e24\].px-4.py-2\.5 {
     display:none !important;
   }#full-capture{
-  width: 30px !important;
+  width: 450px !important;
   max-width: 100% !important;
   margin: 0 auto !important;
   overflow:hidden;
   padding-bottom:0!important;
 }
 #full-capture img{
-  max-width: 200% !important;
+  max-width: 100% !important;
   height: auto !important;
   display: block;
 }
@@ -118,61 +118,55 @@ Error generating stack: `+o.message+`
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
 </div>
 </div>
-
-
 <button id="btn-dl" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:#0f2e24;color:#fff;padding:16px 24px;border-radius:999px;border:none;font-weight:800;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:15px;">⬇ DOWNLOAD</button>
 
 <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/dist/html-to-image.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-
 <script>
-document.getElementById('btn-dl').addEventListener('click', async()=>{
-  const target = document.body;
-  const btn = document.getElementById('btn-dl');
-  if(!target) return alert('Không thấy #full-capture');
-  const old = btn.textContent;
+document.getElementById('btn-dl').addEventListener('click', async function(){
+  var btn = document.getElementById('btn-dl');
+  var target = document.body;
+  var oldText = btn.textContent;
   btn.textContent = '⏳ Đang tạo...';
   btn.disabled = true;
-  const backup = target.getAttribute('style') || '';
+  var oldDisplay = btn.style.display;
+  var bodyOver = document.body.style.overflow;
   try{
     await document.fonts.ready;
-    target.style.transform = 'none';
-    target.style.width = '450px';
-    target.style.maxWidth = '450px';
-
-    const dataUrl = await htmlToImage.toPng(target, {
+    btn.style.display = 'none';
+    document.body.style.overflow = 'visible';
+    await new Promise(function(r){ setTimeout(r,120); });
+    var dataUrl = await htmlToImage.toPng(target, {
       quality: 1,
-      pixelRatio: 2.5,
-      backgroundColor: '#ffffff',
-      width: target.offsetWidth,
+      pixelRatio: 2,
+      backgroundColor: '#f4efe6',
+      width: target.scrollWidth,
       height: target.scrollHeight,
-      style: { transform: 'none', margin: '0 auto' }
+      filter: function(node){ return !(node && node.id==='btn-dl'); }
     });
-
-    const img = new Image();
+    var img = new Image();
     img.src = dataUrl;
-    await new Promise(r => img.onload = r);
-
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({orientation:'p', unit:'px', format:[img.width, img.height], compress:true});
+    await new Promise(function(r){ img.onload = r; });
+    var jsPDF = window.jspdf.jsPDF;
+    var pdf = new jsPDF({orientation:'p', unit:'px', format:[img.width, img.height], compress:true});
     pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height, undefined, 'FAST');
-
-    let ten = "";
-    const edit = target.querySelector('[contenteditable]');
-    if(edit && edit.innerText.trim()) ten = edit.innerText.trim();
+    var ten = '';
+    var edit = document.querySelector('[contenteditable]');
+    if(edit && edit.innerText.trim()){ ten = edit.innerText.trim(); }
     else {
-      const m = target.innerText.match(/Kính gửi\s*:?\s*([^\n\r]+)/i);
-      if(m) ten = m[1].trim();
+      var m = document.body.innerText.match(/Kính gửi\s*:?\s*([^\n\r]+)/i);
+      if(m && m[1]) ten = m[1].trim();
     }
     ten = ten.replace(/[\\/:*?"<>|]/g,'').substring(0,40).trim();
-    pdf.save(ten ? `Thu Moi_${ten}.pdf` : `Thu Moi.pdf`);
-
+    var fname = ten ? ('Thu Moi_' + ten + '.pdf') : 'Thu Moi.pdf';
+    pdf.save(fname);
   }catch(e){
     console.error(e);
     alert('Lỗi: ' + e.message);
   }finally{
-    target.setAttribute('style', backup);
-    btn.textContent = old;
+    btn.style.display = oldDisplay;
+    document.body.style.overflow = bodyOver;
+    btn.textContent = oldText;
     btn.disabled = false;
   }
 });
