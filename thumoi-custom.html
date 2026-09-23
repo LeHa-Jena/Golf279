@@ -127,112 +127,66 @@ Error generating stack: `+o.message+`
     padding-bottom:0!important;
   }
 </style>
-<button id="btn-a5-long">⬇ Tải</button>
+<button id="btn-a5-long" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:#0f2e24;color:#fff;padding:14px 22px;border-radius:999px;border:none;font-weight:800">⬇ Tải</button>
+
 <script>
-(function(){
-  const o = CanvasRenderingContext2D.prototype.createPattern;
-  CanvasRenderingContext2D.prototype.createPattern = function(img, rep){
-    try{ if(!img || img.width===0 || img.height===0) return null; return o.call(this,img,rep);}catch(e){return null;}
-  };
-})();
-
-function trimWhiteBottom(canvas){
-  const ctx = canvas.getContext('2d');
-  const w = canvas.width;
-  const h = canvas.height;
-  const imageData = ctx.getImageData(0, 0, w, h);
-  const data = imageData.data;
-  let bottom = h - 1;
-  const threshold = 250; // coi là trắng
-  for(let y = h - 1; y >=0; y--){
-    let isWhiteRow = true;
-    for(let x=0; x<w; x+=4){
-      const idx = (y*w + x)*4;
-      const r = data[idx], g = data[idx+1], b = data[idx+2];
-      if(r < threshold || g < threshold || b < threshold){ isWhiteRow = false; break; }
-    }
-    if(!isWhiteRow){ bottom = y; break; }
-  }
-  // cắt đuôi trắng dư 20px
-  const cutHeight = Math.min(h, bottom + 20); //bottom + 20 : cắt đuôi trắng. Cắt sát: +2, chừa nhiều: +40
-  if(cutHeight < h){
-    const newCanvas = document.createElement('canvas');
-    newCanvas.width = w;
-    newCanvas.height = cutHeight;
-    newCanvas.getContext('2d').drawImage(canvas, 0,0);
-    return newCanvas;
-  }
-  return canvas;
-}
-
 document.getElementById('btn-a5-long').addEventListener('click', async()=>{
   const btn = document.getElementById('btn-a5-long');
   const target = document.getElementById('full-capture');
-  btn.textContent='Đang tạo'; btn.disabled=true;
-  btn.style.display='none';
-  target.classList.add('xuat-pdf');
-  await new Promise(r=>setTimeout(r,400));
+  if(!target){ alert('Không tìm thấy #full-capture'); return; }
+  btn.textContent='Đang tạo...';
   try{
-    let canvas = await html2canvas(target, {
-      scale: 3,
+    const canvas0 = await html2canvas(target, {
+      scale: 2,
       useCORS: true,
+      allowTaint: true,
       backgroundColor: '#fdfcf8',
-      logging:false,
-      windowWidth: 500,
-      onclone: (clonedDoc) => {
-  const el = clonedDoc.getElementById('full-capture');
-  if(el){
-    el.style.width = '700px';
-    el.style.margin = '0 auto';
-    el.style.paddingBottom='0';
-  }
-}
-          n.style.marginBottom='0';
-          n.style.lineHeight='1.35';
-          n.style.display='inline-block';
-        });
-      }
+      windowWidth: 700,
+      logging:false
     });
-    canvas = trimWhiteBottom(canvas);
+
+    // cắt đuôi trắng - có lỗi thì bỏ qua không crash
+    let canvas = canvas0;
+    try{
+      const ctx = canvas0.getContext('2d');
+      const data = ctx.getImageData(0,0,canvas0.width,canvas0.height).data;
+      let bottom = canvas0.height-1;
+      for(let y=canvas0.height-1; y>=0; y--){
+        let white=true;
+        for(let x=0;x<canvas0.width;x+=8){
+          let i=(y*canvas0.width+x)*4;
+          if(data[i]<250||data[i+1]<250||data[i+2]<250){ white=false; break; }
+        }
+        if(!white){ bottom=y; break; }
+      }
+      let cut = Math.min(canvas0.height, bottom+20);
+      if(cut < canvas0.height){
+        let c=document.createElement('canvas'); c.width=canvas0.width; c.height=cut;
+        c.getContext('2d').drawImage(canvas0,0,0); canvas=c;
+      }
+    }catch(e){ console.log('skip trim', e); }
 
     const { jsPDF } = window.jspdf;
-    const pdfWidthMM = 170; // A5 148, B5 176
-    const canvasRatio = canvas.height / canvas.width;
-    const pdfHeightMM = pdfWidthMM * canvasRatio;
+    const pdfWidthMM = 130;
+    const pdfHeightMM = pdfWidthMM * (canvas.height / canvas.width);
+    const pdf = new jsPDF({orientation:'p',unit:'mm',format:[pdfWidthMM, pdfHeightMM]});
 
-    const pdf = new jsPDF({
-      orientation:'portrait',
-      unit:'mm',
-      format:[pdfWidthMM, pdfHeightMM],
-      compress:true
-    });
-    const imgData = canvas.toDataURL('image/jpeg', 0.92);
-    pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidthMM, pdfHeightMM);
-
-    // Lấy tên ở Kính gửi để đặt tên file
     let guestName = '';
-    const editables = target.querySelectorAll('[contenteditable]');
-    for(const ed of editables){
-      const parentText = (ed.parentElement?.innerText || '');
-      if(parentText.includes('Kính gửi') || ed.previousSibling?.textContent?.includes('Kính gửi')){
-        guestName = ed.innerText.trim();
-        if(guestName) break;
-      }
-    }
+    let ed = target.querySelector('[contenteditable]');
+    if(ed) guestName = ed.innerText.trim();
     if(!guestName){
-      const m = target.innerText.match(/Kính gửi[:\s]*([^\n\r]+)/i);
+      let m = target.innerText.match(/Kính gửi[:\s]*([^\n]+)/i);
       if(m) guestName = m[1].trim();
     }
-    guestName = guestName.replace(/[\\/:*?"<>|]/g,'').replace(/\s+/g,' ').trim();
-    pdf.save(guestName? `Thư Mời_${guestName}.pdf` : `Thư Mời.pdf`);
-  }catch(e){
-    console.error(e);
-    alert('Lỗi: '+e.message);
+    guestName = guestName.replace(/[\\/:*?"<>|]/g,'').trim();
+
+    pdf.addImage(canvas.toDataURL('image/jpeg',0.85), 'JPEG', 0,0,pdfWidthMM,pdfHeightMM);
+    pdf.save(guestName?`Thu Moi_${guestName}.pdf`:`Thu Moi.pdf`);
+  }catch(err){
+    alert('Lỗi: '+ err.message);
+    console.error(err);
   }finally{
-    target.classList.remove('xuat-pdf');
-    btn.style.display='block';
     btn.textContent='⬇ Tải';
-    btn.disabled=false;
   }
 });
 </script>
