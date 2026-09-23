@@ -134,17 +134,17 @@ function trimWhiteBottom(canvas){
 document.getElementById('btn-a5-long').addEventListener('click', async()=>{
   const btn = document.getElementById('btn-a5-long');
   const target = document.getElementById('full-capture');
-  btn.textContent='Đang tạo A5...'; btn.disabled=true;
+  btn.textContent='Đang tạo'; btn.disabled=true;
   btn.style.display='none';
   target.classList.add('xuat-pdf');
   await new Promise(r=>setTimeout(r,400));
   try{
     let canvas = await html2canvas(target, {
-      scale: 2.5,
+      scale: 3,
       useCORS: true,
       backgroundColor: '#fdfcf8',
       logging:false,
-      windowWidth: 500
+      windowWidth: 480
     });
     canvas = trimWhiteBottom(canvas);
 
