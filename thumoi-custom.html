@@ -136,7 +136,7 @@ document.getElementById('btn-dl').addEventListener('click', async()=>{
     target.style.transform = 'none';
     
     const dataUrl = await htmlToImage.toJpeg(target, {
-      quality: 2,
+      quality: 3,
       pixelRatio: 3,
       backgroundColor: '#ffffff',
       width: target.offsetWidth,
