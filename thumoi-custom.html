@@ -188,7 +188,7 @@ document.getElementById('btn-dl').addEventListener('click', async()=>{
     let g=(target.querySelector('[contenteditable]')?.innerText||'').trim();
     if(!g){ const m=target.innerText.match(/Kính gửi[:\s]*([^\n]+)/i); if(m) g=m[1].trim(); }
     g=g.replace(/[\\/:*?"<>|]/g,'').trim();
-    pdf.save(g?`Thu Moi_${g}.pdf`:``);
+    pdf.save(g?`Thư Mời_${g}.pdf`:``);
   }catch(e){
     console.error(e);
     alert('Lỗi: '+e.message);
