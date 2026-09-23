@@ -17,7 +17,18 @@
   <meta name="twitter:description" content="Tháng 10 này, Golf279 hẹn nhau lên cao nguyên. Hai vòng golf tại The Dalat at 1200 và SAM Tuyền Lâm..."><style>
   div.rounded-\[10px\].bg-\[\#0f2e24\].px-4.py-2\.5 {
     display:none !important;
-  }
+  }#full-capture{
+  width: 700px !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  overflow:hidden;
+  padding-bottom:0!important;
+}
+#full-capture img{
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+}
 </style>
 <script>
   function anTatCaKhungDen(){
@@ -163,20 +174,19 @@ document.getElementById('btn-a5-long').addEventListener('click', async()=>{
   await new Promise(r=>setTimeout(r,400));
   try{
     let canvas = await html2canvas(target, {
-      scale: 2.9,
+      scale: 3,
       useCORS: true,
       backgroundColor: '#fdfcf8',
       logging:false,
       windowWidth: 500,
       onclone: (clonedDoc) => {
-        const el = clonedDoc.getElementById('full-capture');
-        if(el){
-          el.style.paddingBottom='0';
-          el.style.marginBottom='0';
-        }
-        clonedDoc.querySelectorAll('[contenteditable]').forEach(n=>{
-          n.style.borderBottom='none';
-          n.style.paddingBottom='0';
+  const el = clonedDoc.getElementById('full-capture');
+  if(el){
+    el.style.width = '700px';
+    el.style.margin = '0 auto';
+    el.style.paddingBottom='0';
+  }
+}
           n.style.marginBottom='0';
           n.style.lineHeight='1.35';
           n.style.display='inline-block';
