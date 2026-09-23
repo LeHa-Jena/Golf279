@@ -184,8 +184,25 @@ if(editable){
   scrollY: 0,
   scrollX: 0,
       logging: false,
-      onclone: (doc)=>{ doc.querySelectorAll('canvas').forEach(c=>{ if(c.width===0||c.height===0){ c.width=1; c.height=1; } }); }
+      // CŨ:
+onclone: (doc)=>{ doc.querySelectorAll('canvas').forEach(c=>{ if(c.width===0||c.height===0){ c.width=1; c.height=1; } }); }
+
+// MỚI - thay toàn bộ bằng:
+onclone: (doc)=>{
+  doc.querySelectorAll('canvas').forEach(c=>{ if(c.width===0||c.height===0){ c.width=1; c.height=1; } });
+  const t = doc.getElementById('full-capture');
+  if(t){
+    t.style.transform='none';
+    t.style.width='520px';
+    t.style.maxWidth='520px';
+    t.style.letterSpacing='0px';
+    t.querySelectorAll('*').forEach(el=>{
+      el.style.transform='none';
+      el.style.letterSpacing='0px';
+      el.style.wordSpacing='normal';
     });
+  }
+}
     target.style.transform=prev;
     canvas=trimWhite(canvas);
     const pdf = new jsPDFClass({orientation:'p', unit:'px', format:[canvas.width, canvas.height], hotfixes:['px_scaling']});
