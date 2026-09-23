@@ -109,22 +109,35 @@ Error generating stack: `+o.message+`
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
   
 </div>
-</div>
+<</div>
+
+<script>
+// VÁ LỖI createPattern - PHẢI ĐẶT TRƯỚC html2canvas MỚI HẾT LỖI
+(function(){
+  const orig = CanvasRenderingContext2D.prototype.createPattern;
+  CanvasRenderingContext2D.prototype.createPattern = function(img, rep){
+    try{
+      if(!img) return null;
+      if(img.width === 0 || img.height === 0) return null;
+      return orig.call(this, img, rep);
+    }catch(e){ return null; }
+  };
+})();
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
 <style>
   #btn-a5-long{position:fixed;bottom:20px;right:20px;z-index:99999;background:#0f2e24;color:#fff;padding:14px 22px;border-radius:999px;border:none;font-weight:800;cursor:pointer}
 </style>
 <button id="btn-a5-long">⬇ Tải</button>
-<script>
-// VÁ LỖI createPattern width=0
-const _cp = CanvasRenderingContext2D.prototype.createPattern;
-CanvasRenderingContext2D.prototype.createPattern = function(i,r){try{if(!i||i.width===0||i.height===0)return null;return _cp.call(this,i,r)}catch(e){return null}};
 
+<script>
 document.getElementById('btn-a5-long').addEventListener('click', async()=>{
   const t = document.getElementById('full-capture');
   try{
-    const canvas = await html2canvas(t,{scale:2,useCORS:true,allowTaint:true,backgroundColor:'#fdfcf8',windowWidth:700});
+    const canvas = await html2canvas(t,{scale:2,useCORS:true,allowTaint:true,backgroundColor:'#fdfcf8',windowWidth:700, logging:false});
     let g = '';
     const ed = t.querySelector('[contenteditable]');
     if(ed) g = ed.innerText.trim();
@@ -135,7 +148,7 @@ document.getElementById('btn-a5-long').addEventListener('click', async()=>{
     const pdf = new jsPDF({orientation:'p',unit:'mm',format:[W,H]});
     pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',0,0,W,H);
     pdf.save(g?`Thu Moi_${g}.pdf`:`Thu Moi.pdf`);
-  }catch(e){ alert('Lỗi: '+e.message); }
+  }catch(e){ alert('Lỗi: '+e.message); console.error(e); }
 });
 </script>
 </body>
