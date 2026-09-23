@@ -119,58 +119,37 @@ Error generating stack: `+o.message+`
 </div>
 </div>
 <script>
-// VÁ LỖI createPattern - PHẢI ĐẶT TRƯỚC html2canvas MỚI HẾT LỖI
-(function(){
-  const orig = CanvasRenderingContext2D.prototype.createPattern;
-  CanvasRenderingContext2D.prototype.createPattern = function(img, rep){
-    try{
-      if(!img) return null;
-      if(img.width === 0 || img.height === 0) return null;
-      return orig.call(this, img, rep);
-    }catch(e){ return null; }
-  };
-})();
-</script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-<style>
-  #btn-a5-long{position:fixed;bottom:20px;right:20px;z-index:99999;background:#0f2e24;color:#fff;padding:14px 22px;border-radius:999px;border:none;font-weight:800;cursor:pointer}
-</style>
-<button id="btn-a5-long">⬇ Tải</button>
-<script>
+// VÁ LỖI createPattern
+const _cp = CanvasRenderingContext2D.prototype.createPattern;
+CanvasRenderingContext2D.prototype.createPattern = function(i,r){try{if(!i||i.width===0||i.height===0)return null;return _cp.call(this,i,r)}catch(e){return null}};
+
 document.getElementById('btn-a5-long').addEventListener('click', async()=>{
   const t = document.getElementById('full-capture');
+  const btn = document.getElementById('btn-a5-long');
+  btn.textContent='Đang tạo...';
   try{
-    await document.fonts.ready; // <- thêm dòng này cho hết lệch chữ cả file
+    await document.fonts.ready;
     const canvas = await html2canvas(t,{
-      scale:2,
-      useCORS:true,
-      allowTaint:true,
-      backgroundColor:'#fdfcf8',
-      windowWidth: 660,
-      logging:false,
+      scale:2, useCORS:true, allowTaint:true, backgroundColor:'#fdfcf8',
+      windowWidth:720, scrollX:0, scrollY:0,
       onclone:(doc)=>{
         const f = doc.getElementById('full-capture');
-        if(f){ f.style.width='690px'; f.style.margin='0 auto'; f.style.padding='0'; }
+        if(f){ f.style.width='720px'; f.style.maxWidth='720px'; }
         doc.querySelectorAll('#full-capture *').forEach(el=>{
           el.style.letterSpacing='0px';
-          el.style.wordSpacing='0px';
+          el.style.minWidth='0';
+          el.style.overflowWrap='anywhere';
         });
       }
     });
-    let g = '';
-    const ed = t.querySelector('[contenteditable]');
-    if(ed) g = ed.innerText.trim();
-    if(!g){ const m = t.innerText.match(/Kính gửi[:\s]*([^\n]+)/i); if(m) g=m[1].trim(); }
-    g = g.replace(/[\\/:*?"<>|]/g,'').trim();
-    g = g.replace(/[\\/:*?"<>|]/g,'').trim();
-    const {jsPDF} = window.jspdf;
-    const W = 130; const H = W*(canvas.height/canvas.width);
-    const pdf = new jsPDF({orientation:'p',unit:'mm',format:[W,H]});
-    pdf.addImage(canvas.toDataURL('image/png'),'PNG',0,0,W,H);
+    let g = (t.querySelector('[contenteditable]')?.innerText || '').trim();
+    if(!g){ const m=t.innerText.match(/Kính gửi[:\s]*([^\n]+)/i); if(m) g=m[1].trim(); }
+    g=g.replace(/[\\/:*?"<>|]/g,'').trim();
+    const {jsPDF}=window.jspdf;
+    const W=130; const H=W*(canvas.height/canvas.width);
+    const pdf=new jsPDF({orientation:'p',unit:'mm',format:[W,H]});
+    pdf.addImage(canvas.toDataURL('image/png'),'PNG',0,0,W,H); // PNG cho nét
     pdf.save(g?`Thu Moi_${g}.pdf`:`Thu Moi.pdf`);
-  }catch(e){ alert('Lỗi: '+e.message); console.error(e); }
+  }catch(e){ alert(e.message); } finally{ btn.textContent='⬇ Tải'; }
 });
 </script>
-</body>
-</html>
