@@ -196,9 +196,25 @@ document.getElementById('btn-a5-long').addEventListener('click', async()=>{
       format:[pdfWidthMM, pdfHeightMM],
       compress:true
     });
-    const imgData = canvas.toDataURL('image/jpeg', 1);
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
     pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidthMM, pdfHeightMM);
-    pdf.save('Thư Mời_.pdf');
+
+    // Lấy tên ở Kính gửi để đặt tên file
+    let guestName = '';
+    const editables = target.querySelectorAll('[contenteditable]');
+    for(const ed of editables){
+      const parentText = (ed.parentElement?.innerText || '');
+      if(parentText.includes('Kính gửi') || ed.previousSibling?.textContent?.includes('Kính gửi')){
+        guestName = ed.innerText.trim();
+        if(guestName) break;
+      }
+    }
+    if(!guestName){
+      const m = target.innerText.match(/Kính gửi[:\s]*([^\n\r]+)/i);
+      if(m) guestName = m[1].trim();
+    }
+    guestName = guestName.replace(/[\\/:*?"<>|]/g,'').replace(/\s+/g,' ').trim();
+    pdf.save(guestName? `Thư Mời_${guestName}.pdf` : `Thư Mời.pdf`);
   }catch(e){
     console.error(e);
     alert('Lỗi: '+e.message);
