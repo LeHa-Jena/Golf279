@@ -141,11 +141,28 @@ Error generating stack: `+o.message+`
 document.getElementById('btn-a5-long').addEventListener('click', async()=>{
   const t = document.getElementById('full-capture');
   try{
-    const canvas = await html2canvas(t,{scale:2,useCORS:true,allowTaint:true,backgroundColor:'#fdfcf8',windowWidth:700, logging:false});
+    await document.fonts.ready; // <- thêm dòng này cho hết lệch chữ cả file
+    const canvas = await html2canvas(t,{
+      scale:2,
+      useCORS:true,
+      allowTaint:true,
+      backgroundColor:'#fdfcf8',
+      windowWidth:680,
+      logging:false,
+      onclone:(doc)=>{
+        const f = doc.getElementById('full-capture');
+        if(f){ f.style.width='680px'; f.style.margin='0 auto'; f.style.padding='0'; }
+        doc.querySelectorAll('#full-capture *').forEach(el=>{
+          el.style.letterSpacing='0px';
+          el.style.wordSpacing='0px';
+        });
+      }
+    });
     let g = '';
     const ed = t.querySelector('[contenteditable]');
     if(ed) g = ed.innerText.trim();
     if(!g){ const m = t.innerText.match(/Kính gửi[:\s]*([^\n]+)/i); if(m) g=m[1].trim(); }
+    g = g.replace(/[\\/:*?"<>|]/g,'').trim();
     g = g.replace(/[\\/:*?"<>|]/g,'').trim();
     const {jsPDF} = window.jspdf;
     const W = 130; const H = W*(canvas.height/canvas.width);
