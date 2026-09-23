@@ -143,15 +143,15 @@ document.getElementById('btn-a5-long').addEventListener('click', async()=>{
   try{
     await document.fonts.ready; // <- thêm dòng này cho hết lệch chữ cả file
     const canvas = await html2canvas(t,{
-      scale:2,
+      scale:3,
       useCORS:true,
       allowTaint:true,
       backgroundColor:'#fdfcf8',
-      windowWidth:680,
+      windowWidth: 660,
       logging:false,
       onclone:(doc)=>{
         const f = doc.getElementById('full-capture');
-        if(f){ f.style.width='680px'; f.style.margin='0 auto'; f.style.padding='0'; }
+        if(f){ f.style.width='690px'; f.style.margin='0 auto'; f.style.padding='0'; }
         doc.querySelectorAll('#full-capture *').forEach(el=>{
           el.style.letterSpacing='0px';
           el.style.wordSpacing='0px';
