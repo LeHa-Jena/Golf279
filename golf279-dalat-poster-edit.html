@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golf279 - Nhac Nhe - Editable</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+body { margin:0; background:#0a1c16; font-family:'Be Vietnam Pro', sans-serif; }
+.font-playfair { font-family:'Playfair Display', serif; }
+.font-cormorant { font-family:'Cormorant Garamond', serif; }
+[contenteditable]:focus { outline: 1px dashed rgba(212,184,150,0.3); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div id="toolbar" class="sticky top-0 z-50 mx-auto max-w-[680px] mt-4 mb-4 flex flex-wrap items-center gap-2 p-3 rounded-full bg-[#0f2e24]/95 border border-white/10 backdrop-blur-md shadow-xl">
+  <button data-cmd="bold" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-[#f5efe6] text-[13px] font-bold">B</button>
+  <button data-cmd="italic" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-[#f5efe6] text-[13px] italic">I</button>
+  <button data-cmd="underline" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-[#f5efe6] text-[13px] underline">U</button>
+  <div class="w-[1px] h-6 bg-white/10"></div>
+  <button data-color="#d4b896" class="w-6 h-6 rounded-full bg-[#d4b896] border border-white/20"></button>
+  <button data-color="#f5efe6" class="w-6 h-6 rounded-full bg-[#f5efe6] border border-white/20"></button>
+  <button data-color="#e8ddd0" class="w-6 h-6 rounded-full bg-[#e8ddd0] border border-white/20"></button>
+  <button data-color="#a8c5b8" class="w-6 h-6 rounded-full bg-[#a8c5b8] border border-white/20"></button>
+  <button data-color="#ff6b6b" class="w-6 h-6 rounded-full bg-[#ff6b6b] border border-white/20"></button>
+  <div class="w-[1px] h-6 bg-white/10"></div>
+  <select id="fontSizeSel" class="px-2 py-1 rounded-full bg-white/5 text-[#f5efe6] text-[12px] border border-white/10">
+    <option value="12px">12px</option>
+    <option value="14px">14px</option>
+    <option value="16px" selected>16px</option>
+    <option value="18px">18px</option>
+    <option value="22px">22px</option>
+    <option value="28px">28px</option>
+  </select>
+  <select id="fontFamilySel" class="px-2 py-1 rounded-full bg-white/5 text-[#f5efe6] text-[12px] border border-white/10">
+    <option value="'Be Vietnam Pro', sans-serif">Sans</option>
+    <option value="'Playfair Display', serif">Playfair</option>
+    <option value="'Cormorant Garamond', serif">Cormorant</option>
+  </select>
+  <div class="w-[1px] h-6 bg-white/10"></div>
+  <button data-cmd="justifyLeft" class="px-2 py-1 rounded-full bg-white/5 text-[#f5efe6] text-[12px]">L</button>
+  <button data-cmd="justifyCenter" class="px-2 py-1 rounded-full bg-white/5 text-[#f5efe6] text-[12px]">C</button>
+  <button data-cmd="justifyRight" class="px-2 py-1 rounded-full bg-white/5 text-[#f5efe6] text-[12px]">R</button>
+  <button data-cmd="insertUnorderedList" class="px-2 py-1 rounded-full bg-white/5 text-[#f5efe6] text-[12px]">• List</button>
+  <button id="clearBtn" class="px-3 py-1 rounded-full bg-white/5 text-[#f5efe6] text-[12px]">Clear</button>
+  <button id="undoBtn" class="px-3 py-1 rounded-full bg-white/5 text-[#f5efe6] text-[12px]">Undo</button>
+</div>
+
+<div class="w-full min-h-screen bg-[#0a1c16] relative flex items-center justify-center py-6 px-3 sm:px-4 overflow-hidden">
+  <div class="absolute inset-0 bg-[#0f2e24]"></div>
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at top, rgba(212,184,150,0.12), transparent 60%)"></div>
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at bottom, rgba(0,0,0,0.8), transparent 70%)"></div>
+  <div class="absolute top-[-10%] left-[-10%] w-[70%] h-[50%] bg-[#1a4a38]/30 blur-[120px] rounded-full"></div>
+  <div class="absolute bottom-[-10%] right-[-20%] w-[80%] h-[60%] bg-black/60 blur-[100px] rounded-full"></div>
+  <div class="absolute inset-0" style="background:radial-gradient(60% 50% at 50% 45%, rgba(15,46,36,0.2) 0%, rgba(15,46,36,0.85) 75%)"></div>
+
+  <div class="relative z-20 w-full max-w-[680px] bg-[#0f2e24] rounded-[28px] border border-[hsla(39,39%,93%,.15)] p-[32px] sm:p-[28px] flex flex-col gap-[18px]" style="background-image:radial-gradient(120% 80% at 50% 0%, hsla(39,39%,93%,.09) 0%, transparent 62%), radial-gradient(120% 90% at 80% 100%, rgba(0,0,0,.7) 0%, transparent 56%), linear-gradient(180deg, rgba(15,46,36,0) 0%, rgba(5,18,14,.9) 92%); height:auto;">
+    <div class="absolute inset-[14px] border border-[hsla(33,42%,71%,.12)] rounded-[20px] pointer-events-none"></div>
+    <div class="absolute inset-[16px] border border-[hsla(39,39%,93%,.06)] rounded-[18px] pointer-events-none"></div>
+    <div class="pointer-events-none absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 font-playfair text-[320px] leading-none text-[#f5efe6] opacity-[0.04] select-none">279</div>
+
+    <div class="relative z-10 flex flex-col gap-[18px]">
+
+      <!-- TOP: logo + GOLF279 PRIVATE TOUR - single row -->
+      <div class="flex items-center gap-[10px]" contenteditable="false">
+        <div class="rounded-full overflow-hidden flex items-center justify-center bg-[#f4efe6] shrink-0 w-[36px] h-[36px] border border-[hsla(39,39%,93%,.18)]">
+          <img src="https://i.postimg.cc/bJXsznzn/Logo-GOLF279-2025-%28Phone%29-%281%29.png" alt="GOLF279" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+          <div style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-family:'Playfair Display'; font-weight:700; font-size:12px; color:#0f2e24;">279</div>
+        </div>
+        <div contenteditable="true" class="font-medium tracking-[0.18em] leading-[2] text-[11px] text-[#f1f0ed] uppercase" style="font-family:'Be Vietnam Pro', sans-serif;">GOLF279 PRIVATE TOUR</div>
+      </div>
+
+      <!-- Title small -->
+      <div class="flex items-center justify-between gap-4">
+        <div contenteditable="true" class="text-[10px] sm:text-[11px] tracking-[0.22em] text-[#d4b896]/80 font-[500] uppercase">GOLF279 CLUB • NHẮC NHẸ TRƯỚC NGÀY GẶP</div>
+        <div class="hidden sm:flex items-center gap-2" contenteditable="false"><div class="h-[1px] w-10 bg-[#d4b896]/20"></div><div class="w-[4px] h-[4px] rounded-full bg-[#d4b896]/40"></div></div>
+      </div>
+
+      <!-- Title main -->
+      <div class="mb-2">
+        <h1 class="font-cormorant font-[400] leading-[0.95] tracking-[-0.02em] text-[#f5efe6]">
+          <span contenteditable="true" class="block text-[38px] sm:text-[48px] md:text-[52px]">22—23.10.2026</span>
+          <span contenteditable="true" class="block mt-1 text-[22px] sm:text-[26px] tracking-[0.18em] text-[#d4b896] font-[300]">• DALAT EDITION</span>
+        </h1>
+        <div class="mt-5 h-[1px] w-full bg-gradient-to-r from-[#d4b896]/25 via-[#d4b896]/10 to-transparent"></div>
+      </div>
+
+      <!-- Intro -->
+      <div class="mb-2 rounded-[14px] bg-[rgba(245,239,230,0.04)] border border-[hsla(39,39%,93%,0.08)] px-[16px] py-[14px] sm:px-[18px]">
+        <p contenteditable="true" class="font-playfair italic text-[14.5px] sm:text-[15.5px] leading-[1.7] text-[#e8ddd0]/90">
+          Tháng 10 Đà Lạt cuối mùa mưa, sáng <span class="not-italic font-[600] text-[#f5efe6]">14°C</span> sương dày, trưa <span class="not-italic font-[600] text-[#f5efe6]">22-24°C</span> nắng nhẹ, chiều có thể mưa phùn.
+        </p>
+      </div>
+
+      <!-- Checklist -->
+      <div class="mb-2">
+        <h2 class="font-cormorant text-[18px] sm:text-[20px] font-[500] tracking-[0.02em] text-[#f5efe6] mb-4 flex items-center gap-3">
+          <span class="inline-block h-[1px] w-6 bg-[#d4b896]/30"></span>
+          <span contenteditable="true">Anh chị nhớ chuẩn bị:</span>
+        </h2>
+        <div class="space-y-[14px]" id="checklist" contenteditable="true">
+          <div class="group flex gap-[12px] items-start rounded-[12px] border border-transparent hover:border-[hsla(39,39%,93%,0.07)] hover:bg-[rgba(245,239,230,0.03)] px-[10px] py-[9px] -mx-[10px] transition-all">
+            <div class="mt-[6px] shrink-0 w-[18px] h-[18px] rounded-full border border-[#d4b896]/25 flex items-center justify-center bg-[#d4b896]/[0.06]"><div class="w-[5px] h-[5px] rounded-full bg-[#d4b896]/80"></div></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[13.5px] sm:text-[14px] leading-[1.6] text-[#f0e6d8]/90">Áo ấm nhẹ + áo khoác gió mỏng, vì đêm và sáng sớm se lạnh 13-16°C</p>
+              <p class="mt-[2px] text-[11px] tracking-[0.08em] uppercase text-[#d4b896]/45">layer giữ nhiệt mỏng</p>
+            </div>
+          </div>
+          <div class="group flex gap-[12px] items-start rounded-[12px] border border-transparent hover:border-[hsla(39,39%,93%,0.07)] hover:bg-[rgba(245,239,230,0.03)] px-[10px] py-[9px] -mx-[10px] transition-all">
+            <div class="mt-[6px] shrink-0 w-[18px] h-[18px] rounded-full border border-[#d4b896]/25 flex items-center justify-center bg-[#d4b896]/[0.06]"><div class="w-[5px] h-[5px] rounded-full bg-[#d4b896]/80"></div></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[13.5px] sm:text-[14px] leading-[1.6] text-[#f0e6d8]/90">Áo mưa mỏng gọn trong túi gậy, ô nhỏ</p>
+              <p class="mt-[2px] text-[11px] tracking-[0.08em] uppercase text-[#d4b896]/45">chiều có thể mưa phùn bất chợt</p>
+            </div>
+          </div>
+          <div class="group flex gap-[12px] items-start rounded-[12px] border border-transparent hover:border-[hsla(39,39%,93%,0.07)] hover:bg-[rgba(245,239,230,0.03)] px-[10px] py-[9px] -mx-[10px] transition-all">
+            <div class="mt-[6px] shrink-0 w-[18px] h-[18px] rounded-full border border-[#d4b896]/25 flex items-center justify-center bg-[#d4b896]/[0.06]"><div class="w-[5px] h-[5px] rounded-full bg-[#d4b896]/80"></div></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[13.5px] sm:text-[14px] leading-[1.6] text-[#f0e6d8]/90">Giày đế mềm chống trơn, 2 găng tay thay đổi - fairway sáng sớm còn ẩm, sương mù</p>
+              <p class="mt-[2px] text-[11px] tracking-[0.08em] uppercase text-[#d4b896]/45">cỏ ướt & sương dày</p>
+            </div>
+          </div>
+          <div class="group flex gap-[12px] items-start rounded-[12px] border border-transparent hover:border-[hsla(39,39%,93%,0.07)] hover:bg-[rgba(245,239,230,0.03)] px-[10px] py-[9px] -mx-[10px] transition-all">
+            <div class="mt-[6px] shrink-0 w-[18px] h-[18px] rounded-full border border-[#d4b896]/25 flex items-center justify-center bg-[#d4b896]/[0.06]"><div class="w-[5px] h-[5px] rounded-full bg-[#d4b896]/80"></div></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[13.5px] sm:text-[14px] leading-[1.6] text-[#f0e6d8]/90">The Dalat at 1200 ở độ cao 1200m fairway ôm thung lũng, Sam Tuyền Lâm men hồ - di chuyển sớm có sương, đường trơn nhẹ</p>
+              <p class="mt-[2px] text-[11px] tracking-[0.08em] uppercase text-[#d4b896]/45">đi sớm 15′ - giữ khoảng cách</p>
+            </div>
+          </div>
+          <div class="group flex gap-[12px] items-start rounded-[12px] border border-transparent hover:border-[hsla(39,39%,93%,0.07)] hover:bg-[rgba(245,239,230,0.03)] px-[10px] py-[9px] -mx-[10px] transition-all">
+            <div class="mt-[6px] shrink-0 w-[18px] h-[18px] rounded-full border border-[#d4b896]/25 flex items-center justify-center bg-[#d4b896]/[0.06]"><div class="w-[5px] h-[5px] rounded-full bg-[#d4b896]/80"></div></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[13.5px] sm:text-[14px] leading-[1.6] text-[#f0e6d8]/90">Thuốc cá nhân, giữ ấm cổ</p>
+              <p class="mt-[2px] text-[11px] tracking-[0.08em] uppercase text-[#d4b896]/45">cao nguyên lạnh sâu về đêm</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Closing -->
+      <div class="rounded-[16px] bg-gradient-to-br from-[rgba(212,184,150,0.08)] to-[rgba(212,184,150,0.02)] border border-[#d4b896]/[0.14] p-[18px] sm:p-[20px] mb-2 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-[#d4b896]/30 via-[#d4b896]/10 to-transparent"></div>
+        <p contenteditable="true" class="font-playfair italic text-[15px] sm:text-[16px] leading-[1.75] text-[#f5efe6]/90">Cần hỗ trợ gì cứ nhắn em 24/7 nhé, em lo hết.<br><span class="font-cormorant not-italic font-[500] text-[17px] sm:text-[18px] text-[#d4b896]">Hẹn gặp nhau giữa mùa thu Đà Lạt.</span></p>
+        <div class="mt-3 flex items-center gap-2 text-[#d4b896]/40"><div class="h-[1px] w-8 bg-[#d4b896]/20"></div><span class="text-[10px] tracking-[0.2em] uppercase">with love</span></div>
+      </div>
+
+      <!-- Bottom - NO QR - only contact centered -->
+      <div class="flex items-center justify-center gap-4 pt-6 border-t border-[hsla(39,39%,93%,0.08)] text-center">
+        <div class="flex-1 min-w-0 text-center">
+          <div contenteditable="true" class="text-[11px] tracking-[0.18em] uppercase text-[#d4b896]/50 mb-[6px]">Liên hệ thư ký</div>
+          <div contenteditable="true" class="font-cormorant text-[18px] sm:text-[20px] leading-[1.2] text-[#f5efe6] font-[500]">098 3351 744 <span class="font-[300] text-[#e8ddd0]/70 text-[16px]">(Ms Hà)</span></div>
+          <div contenteditable="true" class="text-[12px] text-[#e8ddd0]/55 mt-[2px]">Thư Ký CLB • Golf279 Club</div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex items-center justify-center gap-2 opacity-40">
+        <div class="h-[1px] w-6 bg-[#d4b896]/30"></div>
+        <span contenteditable="true" class="text-[9px] tracking-[0.25em] uppercase text-[#f5efe6]/60">GOLF279 • DALAT • OCT 2026</span>
+        <div class="h-[1px] w-6 bg-[#d4b896]/30"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const toolbar = document.getElementById('toolbar');
+let savedRange = null;
+
+function saveSelection(){
+  const sel = window.getSelection();
+  if(sel && sel.rangeCount>0) savedRange = sel.getRangeAt(0);
+}
+function restoreSelection(){
+  if(savedRange){
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+  }
+}
+
+document.addEventListener('selectionchange', saveSelection);
+
+toolbar.addEventListener('mousedown', e=> e.preventDefault());
+
+toolbar.querySelectorAll('[data-cmd]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    restoreSelection();
+    document.execCommand(btn.dataset.cmd, false, null);
+  });
+});
+
+document.querySelectorAll('[data-color]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    restoreSelection();
+    document.execCommand('foreColor', false, btn.dataset.color);
+  });
+});
+
+document.getElementById('fontSizeSel').addEventListener('change', e=>{
+  restoreSelection();
+  const size = e.target.value;
+  document.execCommand('fontSize', false, '7');
+  const sel = window.getSelection();
+  if(sel && sel.anchorNode){
+    const parent = sel.anchorNode.parentElement;
+    if(parent && parent.tagName==='FONT'){
+      parent.removeAttribute('size');
+      parent.style.fontSize = size;
+    }
+  }
+});
+
+document.getElementById('fontFamilySel').addEventListener('change', e=>{
+  restoreSelection();
+  document.execCommand('fontName', false, e.target.value);
+  // fix font family style
+  const sel = window.getSelection();
+  if(sel && sel.anchorNode && sel.anchorNode.parentElement){
+    sel.anchorNode.parentElement.style.fontFamily = e.target.value;
+  }
+});
+
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  restoreSelection();
+  document.execCommand('removeFormat', false, null);
+});
+
+document.getElementById('undoBtn').addEventListener('click', ()=>{
+  document.execCommand('undo', false, null);
+});
+</script>
+</body>
+</html>
